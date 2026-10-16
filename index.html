@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>나도 작곡가2</title>
+<title>SongDrawer</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Jua&display=swap">
 <style>
 /* 레이아웃: 단계 → 코드 진행·타이머 → 한 마디 한 화면 9열 판(입구 · [퍼즐 · 음] × 4박, 10음 세로) → 안내 → 조작 */
@@ -119,9 +119,9 @@ button.mc{font:inherit;color:inherit;cursor:pointer}
 .trow{display:flex;align-items:baseline;gap:8px}
 #tlab{font-size:12.5px;color:var(--muted)}
 #tnum{font:400 18px/1.1 var(--f-display);font-variant-numeric:tabular-nums}
-.lvcard{display:grid;align-content:center;padding:8px}
-.vseg{display:grid;gap:5px;border:0;background:transparent;overflow:visible}
-.vseg button{border:1px solid var(--line);border-radius:10px;border-right:1px solid var(--line);text-align:left;white-space:nowrap;padding:7px 10px;min-width:0;background:var(--bg)}
+.lvcard{display:grid;align-content:center;padding:6px}
+.vseg{display:grid;gap:4px;border:0;background:transparent;overflow:visible}
+.vseg button{border:1px solid var(--line);border-radius:10px;border-right:1px solid var(--line);text-align:left;white-space:nowrap;padding:5px 10px;font-size:13px;line-height:1.35;min-width:0;background:var(--bg)}
 .vseg button:last-child{border-right:1px solid var(--line)}
 .vseg button[aria-pressed="true"]{border-color:var(--accent)}
 .bar{height:7px;border-radius:99px;background:var(--line);overflow:hidden}
@@ -228,6 +228,37 @@ body[data-phase="flow"] #tfill,body[data-phase="done"] #tfill{opacity:.35}
 .sm{min-height:40px;padding:0 14px;border:1px solid var(--line);background:var(--surface);border-radius:10px;font-size:14px}
 .sm[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 .lab{display:flex;flex-wrap:wrap;gap:8px 18px}
+
+/* 코드 칸과 안내 칸을 한 카드로: 모바일은 [화음 이름 | 리듬] / [도미솔 | 빠르기] 두 줄, 넓은 화면은 이름 아래 한 줄에 도미솔·리듬·빠르기 */
+.prog .msg{background:none;border:0;border-top:1px solid var(--line);border-radius:0;padding:8px 0 0;margin-top:2px}
+.card.prog:has(.msg.ok){border-color:var(--good)}
+.card.prog:has(.msg.bad){border-color:var(--bad)}
+.prog .msg #cname{white-space:nowrap}
+.prog .msg .mrow{gap:6px 12px}
+@media (max-width:639px){
+  .prog .msg .mfix{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 10px;align-items:center}
+  .prog .msg .mrow,.prog .msg #rslot{display:contents}
+  .prog .msg #cname{grid-area:1/1}
+  .prog .msg #cnotes{grid-area:2/1}
+  .prog .msg #rbtn{grid-area:1/2;justify-self:end}
+  .prog .msg #tbtn{grid-area:2/2;justify-self:end}
+}
+.helpbtn{margin-top:4px;border:1px dashed var(--accent);border-radius:10px;background:transparent;color:var(--accent);font:600 13px/1.35 var(--f-ui);padding:5px 10px;text-align:left;white-space:nowrap}
+.lvcard{align-content:center}
+.tour{position:fixed;inset:0;z-index:80}
+.tour .tspot{position:fixed;border:3px solid #FFD23F;border-radius:16px;box-shadow:0 0 0 9999px rgba(18,12,48,.62),0 0 18px 4px rgba(255,210,63,.65);pointer-events:none;transition:left .25s,top .25s,width .25s,height .25s;animation:tourpulse 1.4s ease-in-out infinite}
+@keyframes tourpulse{50%{box-shadow:0 0 0 9999px rgba(18,12,48,.62),0 0 4px 1px rgba(255,210,63,.35)}}
+.tour .tip{position:fixed;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:0 10px 32px rgba(0,0,0,.4);transition:top .25s,left .25s}
+.tour .tn{font-size:12px;color:var(--muted)}
+.tour .th{display:block;font:400 19px/1.3 var(--f-display);margin:1px 0 4px}
+.tour .tx{margin:0 0 10px;font-size:13.5px;line-height:1.55;color:var(--ink)}
+.tour .tb{display:flex;gap:8px;align-items:center}
+.tour .tb span{flex:1}
+.tour .tb button{min-height:36px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);font-size:13.5px}
+.tour .tb .tnext{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.tour .tb .tskip{border:0;background:none;color:var(--muted);padding:0 4px}
+@media (prefers-reduced-motion:reduce){.tour .tspot,.tour .tip{transition:none;animation:none}}
+@media (max-width:380px){.helpbtn{grid-column:1/-1}}
 @media (max-width:380px){.hud{grid-template-columns:1fr}.vseg{grid-template-columns:1fr 1fr}}
 @media (prefers-reduced-motion:reduce){.slot.pop .pipe,.slot.shake .pipe,.spill,.tank.bad .body,.next{animation:none}.wheel{transition:none}}
 </style>
@@ -246,11 +277,11 @@ body[data-phase="flow"] #tfill,body[data-phase="done"] #tfill{opacity:.35}
   <section class="hud">
     <div class="card prog">
       <div class="mchips" id="mchips"></div>
-      <div class="timer">
-        <div class="trow"><span id="tlab">첫 음을 고르면</span><span id="tnum">3초 뒤</span></div>
-        <div class="bar"><div id="tfill"></div></div>
-        <button type="button" class="go" id="go" hidden>다시하기</button>
-      </div>
+      <button type="button" class="go" id="go" hidden>다시하기</button>
+    <div class="msg" id="msg">
+      <div class="mfix"><div id="cname"></div><div class="mrow"><div id="cnotes"></div><span id="rslot"></span></div></div>
+      <div class="mvar" id="mvar" aria-live="polite" hidden></div>
+    </div>
     </div>
     <div class="card lvcard">
       <div class="seg vseg" id="stageSeg" role="group" aria-label="레벨">
@@ -259,13 +290,9 @@ body[data-phase="flow"] #tfill,body[data-phase="done"] #tfill{opacity:.35}
         <button type="button" aria-pressed="false" data-s="2">비화성음 연습</button>
         <button type="button" aria-pressed="false" data-s="3">자유 비화성음</button>
       </div>
+      <button type="button" class="helpbtn" id="helpBtn" aria-haspopup="dialog">? 설명 보기</button>
     </div>
   </section>
-
-  <div class="msg" id="msg">
-    <div class="mfix"><div id="cname"></div><div class="mrow"><div id="cnotes"></div><span id="rslot"></span></div></div>
-    <div class="mvar" id="mvar" aria-live="polite" hidden></div>
-  </div>
 
   <div class="boardwrap" id="bwrap">
     <div class="stage" id="stage"><div class="mview" id="mview">
@@ -780,14 +807,6 @@ function setHud(){
   nx.textContent=last?'처음부터 들어보기':'다음마디 ▶';
   nx.classList.toggle('ready',can);nx.classList.toggle('off',!can);nx.setAttribute('aria-disabled',!can);
   $('#prev').disabled=R.m===0;
-  const failed=G.phase==='done'&&G.result==='fail';
-  if(G.phase==='ready'||failed){
-    $('#tlab').textContent=failed?'다시 이으면':'첫 음을 고르면';
-    $('#tnum').textContent='3초 뒤';
-    $('#tfill').style.width='100%';
-  }else if(G.phase==='flow'||G.phase==='done'){
-    $('#tlab').textContent=G.phase==='flow'?'음악이':'결과';$('#tnum').textContent=G.phase==='flow'?'흐르는 중':(G.result==='win'?'완성!':'멈춤');
-  }
   refreshGuide();
 }
 
@@ -796,12 +815,12 @@ function shakeCell(s){s.el.classList.remove('shake');void s.el.offsetWidth;s.el.
 function onSlot(cell){                             // 누를 때마다 모양이 바뀜 (빈 칸 → 6가지 모양 → 빈 칸)
   if(G.phase==='done'){
     if(G.result==='fail'){resetWater();G={phase:'ready'};setHud();}   // 실패 뒤에도 바로 고칠 수 있음
-    else{                                          // 완성된 마디: 이은 파이프를 누르면 그 파이프가 지워지고 다시 3초 카운트
+    else{                                          // 완성된 마디: 이은 파이프를 누르면 그 파이프가 지워지고 다시 이어 볼 수 있음
       if(!cell.pipe)return;
       resetWater();R.done[R.m]=null;G={phase:'ready'};
       cell.pipe=null;paint(cell);R.route[cell.b]=undefined;
       setHud();onPipesChanged(true);
-      say('','파이프를 지웠어요','3초 뒤 음악이 흘러요. 다시 이어 보세요.');
+      say('','파이프를 지웠어요','다시 이어 보세요. 다 이으면 음악이 흘러요.');
       return;
     }
   }
@@ -1054,9 +1073,8 @@ function isComplete(){                             // 입구에서 4박 끝 탱�
 function armCountdown(ms,quiet){                   // 첫 파이프를 놓으면 3초 뒤 물이 옴
   cancelAuto();ensureAC();
   G={phase:'count',t0:performance.now(),countMs:ms||COUNT_MS,passed:0,ticks:0};
-  setHud();$('#tlab').textContent='음악 시작까지';
-  if(!quiet)say('',`${R.m+1}마디 · 3초 뒤 음악이 흘러요`,'계속 이어 보세요. 다 이으면 바로 음악이 빠르게 흘러요.');
-  ensureLoop();
+  setHud();
+  if(!quiet)say('',`${R.m+1}마디 · 음악 만들기`,'천천히 이어 보세요. 다 이으면 음악이 흘러요.');
 }
 function beginWater(now){                          // 이어진 상태면 빠르게, 아니면 느리게 시작
   cancelAuto();ensureAC();now=now||performance.now();
@@ -1121,15 +1139,12 @@ function beginFlow(now){
 }
 function loop(now){
   if(G.phase==='count'){
-    const left=Math.max(0,G.countMs-(now-G.t0));
-    $('#tnum').textContent=(left/1000).toFixed(1)+'초';
-    $('#tfill').style.width=(left/G.countMs*100)+'%';
-    if(left<=0)beginWater(now);
+    // 시간 제한 없음: 파이프를 다 이을 때까지 기다림
   }else if(G.phase==='flow'&&G.cur){
     G.cur.w.style.strokeDashoffset=G.cur.len*(1-Math.max(0,Math.min(1,(now-G.tileT0)/G.cur.dur)));
     if(now-G.tileT0>=G.cur.dur)step(now);
   }
-  if(G.phase==='count'||G.phase==='flow')requestAnimationFrame(loop);else looping=false;
+  if(G.phase==='flow')requestAnimationFrame(loop);else looping=false;
 }
 function step(now){
   const c=G.cur;c.w.style.strokeDashoffset=0;
@@ -1387,6 +1402,62 @@ $('#playOne').addEventListener('click',()=>{stopPlay();ensureAC();soundOnly();})
 /* ---------- 내보내기(소리 파일 저장) ---------- */
 let DL=null;
 (async()=>{try{DL=window.claude&&await window.claude.use('downloads');}catch(e){DL=null;}})();
+
+/* ---------- 설명 보기: 버튼마다 노란 테두리로 짚어 주는 안내 ---------- */
+const TOUR=[
+  {t:['#stageSeg [data-s="0"]'],h:'화성음만',x:'마디에 어울리는 음(화성음)만 열려 있어요. 어디에 이어도 정답이라 처음 시작하기 좋아요.'},
+  {t:['#stageSeg [data-s="1"]'],h:'화성음 연습',x:'모든 칸이 열려 있어요. 이 마디에 어울리는 음에만 이어 보세요.'},
+  {t:['#stageSeg [data-s="2"]'],h:'비화성음 연습',x:'어울리는 음 사이를 이어 주는 ‘지나가는 음’을 2·4박(약박)에 한 칸씩 쓸 수 있어요. 1·3박(강박)에는 어울리는 음만 와요.'},
+  {t:['#stageSeg [data-s="3"]'],h:'자유 비화성음',x:'가요처럼 더 다양한 음을 써요. 살짝 낯선 음도 괜찮지만, 마디와 크게 부딪히는 음(빨강)은 안 돼요.'},
+  {t:['#mchips'],h:'코드 진행',x:'8마디의 코드 진행이에요. 지금 마디는 테두리로 표시되고, 완성한 마디는 초록색이 돼요.'},
+  {t:['#cnotes'],h:'도·미·솔',x:'이번 마디 화음을 이루는 음이에요. 이 음들이 ‘어울리는 음’이에요.'},
+  {t:['#rbtn'],h:'리듬',x:'마디마다 음표 4개짜리 리듬을 고를 수 있어요.'},
+  {t:['#tbtn'],h:'빠르기',x:'누를 때마다 느리게 · 보통빠르게 · 빠르게로 바뀌어요.'},
+  {t:['#board'],h:'음 만들기 판',x:'음을 눌러 선택하고, 다음 박의 음까지 손가락으로 이어 곡을 만들어보세요. 4박(한 마디)을 모두 이으면 내 음악이 흘러요.'},
+  {t:['.navrow'],h:'이전마디 · 다음마디',x:'마디를 완성하면 다음 마디로 갈 수 있어요. 마지막 음이 다음 마디의 시작이 돼요.'},
+  {t:['#band .ib[data-k]'],h:'🥁 🎸 🎹 반주',x:'드럼 · 베이스 · 건반이에요. 누를 때마다 다른 반주(없음 포함)로 바뀌고, 그 악기 소리만 들려줘요.'},
+  {t:['#band .ns'],h:'도 | C',x:'계이름을 한글(도레미)과 영어(CDE)로 바꿔서 보여줘요.'},
+  {t:['#redo1','#restart'],h:'다시하기',x:'지금 마디만, 또는 처음부터 다시 만들어요. 마디를 완성하면 이 줄 맨 앞에 ‘들어보기’ 버튼이 생겨서 반주와 함께 내 음악을 들어볼 수 있어요.'},
+  {t:['#hnt'],h:'힌트',x:'켜면 음 탱크에 색이 나타나요. 초록은 어울리는 음, 노랑은 쓸 수 있는 음, 빨강은 쓰면 안 되는 음이에요. 단계마다 보이는 색이 달라요.'},
+  {t:['#xpt'],h:'음악 다운로드',x:'내 음악을 소리 · 악보 PDF · 악보 이미지로 저장해요. 제목도 정할 수 있고, 만드는 중간에도 저장할 수 있어요.'}];
+function openHelp(){
+  if(document.querySelector('.tour')||document.querySelector('.rm'))return;
+  let i=0;
+  const ov=mk('div','tour',`<div class="tspot"></div><div class="tip" role="dialog" aria-modal="true" aria-label="사용 설명"><div class="tn"></div><b class="th"></b><p class="tx"></p><div class="tb"><button type="button" class="tskip">건너뛰기</button><span></span><button type="button" class="tprev">◀ 이전</button><button type="button" class="tnext"></button></div></div>`);
+  document.body.appendChild(ov);
+  const spot=ov.querySelector('.tspot'),tip=ov.querySelector('.tip');
+  const rectOf=sel=>{let r=null;sel.forEach(q=>document.querySelectorAll(q).forEach(e=>{const b=e.getBoundingClientRect();if(b.width<2||b.height<2)return;r=r?{l:Math.min(r.l,b.left),t:Math.min(r.t,b.top),r:Math.max(r.r,b.right),b:Math.max(r.b,b.bottom)}:{l:b.left,t:b.top,r:b.right,b:b.bottom};}));return r;};
+  const el1=sel=>{for(const q of sel){const e=document.querySelector(q);if(e&&e.getBoundingClientRect().width>1)return e;}return null;};
+  const place=()=>{
+    const st=TOUR[i],r=rectOf(st.t);if(!r)return false;
+    const pd=7,vw=innerWidth,vh=innerHeight;
+    spot.style.cssText=`left:${r.l-pd}px;top:${r.t-pd}px;width:${r.r-r.l+pd*2}px;height:${r.b-r.t+pd*2}px`;
+    ov.querySelector('.tn').textContent=`${i+1} / ${TOUR.length}`;ov.querySelector('.th').textContent=st.h;ov.querySelector('.tx').textContent=st.x;
+    ov.querySelector('.tprev').hidden=i===0;ov.querySelector('.tnext').textContent=i===TOUR.length-1?'끝':'다음 ▶';
+    const tw=Math.min(330,vw-24);tip.style.width=tw+'px';
+    const th=tip.offsetHeight,below=vh-(r.b+pd),above=r.t-pd;
+    let top=below>=th+14||below>=above?r.b+pd+12:r.t-pd-12-th;
+    top=Math.max(10,Math.min(top,vh-th-10));
+    let left=(r.l+r.r)/2-tw/2;left=Math.max(12,Math.min(left,vw-tw-12));
+    tip.style.top=top+'px';tip.style.left=left+'px';
+    return true;
+  };
+  const show=dir=>{
+    while(i>=0&&i<TOUR.length&&!rectOf(TOUR[i].t))i+=dir;       // 안 보이는 버튼은 건너뜀
+    if(i<0){i=0;return show(1);}
+    if(i>=TOUR.length)return close();
+    const e=el1(TOUR[i].t);if(e)e.scrollIntoView({block:'center',inline:'nearest'});
+    requestAnimationFrame(()=>{place();ov.querySelector('.tnext').focus({preventScroll:true});});
+  };
+  const close=()=>{ov.remove();removeEventListener('resize',place);removeEventListener('keydown',key,true);};
+  const key=e=>{if(e.key==='Escape')close();else if(e.key==='ArrowRight'){i++;show(1);}else if(e.key==='ArrowLeft'&&i>0){i--;show(-1);}};
+  ov.querySelector('.tnext').onclick=()=>{i++;show(1);};
+  ov.querySelector('.tprev').onclick=()=>{i--;show(-1);};
+  ov.querySelector('.tskip').onclick=close;
+  addEventListener('resize',place);addEventListener('keydown',key,true);
+  show(1);
+}
+$('#helpBtn').addEventListener('click',openHelp);
 const FMT={wav:{l:'소리',ext:'wav',d:'소리 파일(wav)로 만들어요. 지금 고른 악기·빠르기·리듬 그대로 담겨요.'},webm:{l:'소리',ext:'webm',d:'소리 파일(webm)로 저장해요. 지금 고른 악기·빠르기·리듬 그대로 담겨요.'},pdf:{l:'악보 PDF',ext:'pdf',d:'계이름이 적힌 악보를 PDF 한 장으로 저장해요. 인쇄하기 좋아요.'},png:{l:'악보 이미지',ext:'png',d:'계이름이 적힌 악보를 그림 파일(PNG)로 저장해요. 폰에 저장하고 보내기 좋아요.'}};
 function scoreSVG(title,idx){                      // 완성한 마디들의 악보(계이름 포함)를 SVG 문장으로. 1240×877 = A4 가로 비율
   const W=1240,H=877,mg=60,clefW=70,per=4,mw=(W-mg*2-clefW)/Math.min(per,idx.length),pp=11,su=2*pp,sc=su/250,ks=sc*.74,ink='#27204D',mut='#6A6292';
@@ -1454,13 +1525,14 @@ function openExport(){
   let busy=false;
   const close=()=>{if(!busy)m.remove();};
   no.onclick=close;m.addEventListener('click',e=>{if(e.target===m)close();});
-  m.querySelector('#xfmt').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||busy)return;fmt=b.dataset.f;m.querySelectorAll('#xfmt button').forEach(x=>x.setAttribute('aria-pressed',x===b));msg.textContent=info();});
+  m.querySelector('#xfmt').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||busy)return;fmt=b.dataset.f;m.querySelectorAll('#xfmt button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+    m.querySelectorAll('.xres').forEach(x=>x.remove());ok.hidden=false;inp.hidden=false;ok.disabled=!idx.length;inp.disabled=false;no.disabled=false;msg.textContent=info();});
   const give=async(blob,title)=>{
     busy=false;
     if(!blob||!blob.size){msg.textContent='파일을 만들지 못했어요. 다시 시도해 주세요.';ok.disabled=false;no.disabled=false;inp.disabled=false;return;}
     try{
       await DL.save({filename:title+'.'+FMT[fmt].ext,data:blob});
-      msg.textContent='저장했어요!';ok.hidden=true;no.textContent='닫기';no.disabled=false;
+      msg.textContent='저장했어요! 다른 형식도 위에서 골라 받을 수 있어요.';ok.disabled=false;no.disabled=false;inp.disabled=false;
     }catch(e){
       const c=e&&e.code;
       msg.textContent=c==='declined'?'저장하지 않았어요.':c==='rate_limited'?'잠시 뒤에 다시 눌러 주세요.':'이 화면에서는 저장할 수 없어요.';
@@ -1476,12 +1548,12 @@ function openExport(){
       if(!DL){                                       // 파일 저장 기능이 없는 화면(배포 링크 등): 만든 결과를 화면에 보여주고 직접 저장하게 함
         busy=false;no.disabled=false;
         if(!blob){msg.textContent='파일을 만들지 못했어요. 다시 시도해 주세요.';ok.disabled=false;inp.disabled=false;return;}
-        const u=URL.createObjectURL(blob),fn=title+'.'+FMT[fmt].ext;ok.hidden=true;inp.hidden=true;m.querySelector('#xfmt').hidden=true;
-        if(fmt!=='png'){const a=`<a href="${u}" download="${fn.replace(/"/g,'')}" class="ok" style="display:block;text-align:center;text-decoration:none;margin-top:10px">파일로 저장</a>`;
+        const u=URL.createObjectURL(blob),fn=title+'.'+FMT[fmt].ext;ok.hidden=true;inp.hidden=true;
+        if(fmt!=='png'){const a=`<a href="${u}" download="${fn.replace(/"/g,'')}" class="ok xres" style="display:block;text-align:center;text-decoration:none;margin-top:10px">파일로 저장</a>`;
           msg.textContent=fmt==='wav'?'아래 "파일로 저장"을 누르세요. 안 되면 재생기의 ⋮ 메뉴에서 다운로드할 수 있어요.':'아래 "파일로 저장"을 누르세요. 저장이 안 되면 "PDF 열기"로 열어서 저장해 주세요.';
-          inp.insertAdjacentHTML('afterend',fmt==='wav'?`<audio controls src="${u}" style="width:100%;margin-top:6px"></audio>${a}`:`${a}<a href="${u}" target="_blank" rel="noopener" class="rnd" style="display:block;text-align:center;text-decoration:none;margin-top:8px">PDF 열기</a>`);}
+          inp.insertAdjacentHTML('afterend',fmt==='wav'?`<audio class="xres" controls src="${u}" style="width:100%;margin-top:6px"></audio>${a}`:`${a}<a href="${u}" target="_blank" rel="noopener" class="rnd xres" style="display:block;text-align:center;text-decoration:none;margin-top:8px">PDF 열기</a>`);}
         else{msg.innerHTML='그림을 <b>길게 눌러</b> 사진/파일로 저장하세요.';
-          inp.insertAdjacentHTML('afterend',`<img src="${u}" alt="${title} 악보" style="width:100%;margin-top:10px;border:1px solid var(--line);border-radius:8px;-webkit-touch-callout:default">`);}
+          inp.insertAdjacentHTML('afterend',`<img class="xres" src="${u}" alt="${title} 악보" style="width:100%;margin-top:10px;border:1px solid var(--line);border-radius:8px;-webkit-touch-callout:default">`);}
         return;
       }
       await give(blob,title);return;
