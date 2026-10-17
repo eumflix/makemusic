@@ -1317,14 +1317,15 @@ function loop(now){
     // 시간 제한 없음: 파이프를 다 이을 때까지 기다림
   }else if(G.phase==='flow'&&G.cur){
     G.cur.w.style.strokeDashoffset=G.cur.len*(1-Math.max(0,Math.min(1,(now-G.tileT0)/G.cur.dur)));
-    if(now-G.tileT0>=G.cur.dur)step(now);
+    for(let g=0;g<12&&G.phase==='flow'&&G.cur&&now-G.tileT0>=G.cur.dur;g++)step(now);   // 프레임이 늦어도 밀린 칸을 한 번에 따라잡음
   }
   if(G.phase==='flow')requestAnimationFrame(loop);else looping=false;
 }
 function step(now){
   const c=G.cur;c.w.style.strokeDashoffset=0;
   if(!c.src&&!c.note)G.passed++;
-  enter(c.r+DIRS[c.exit][0],c.c+DIRS[c.exit][1],opp(c.exit),now);
+  const ideal=G.tileT0+c.dur,t=(ideal>now||now-ideal>300)?now:ideal;   // 다음 칸은 ‘칸이 끝났어야 할 시각’부터 시작: 프레임이 늦어 생기는 몇 ms가 칸마다 쌓여 멜로디가 점점 늦어지는 것을 막음
+  enter(c.r+DIRS[c.exit][0],c.c+DIRS[c.exit][1],opp(c.exit),t);
 }
 function enter(r,c,entry,now){
   const cell=(r>=0&&r<NR&&c>=0&&c<9)?cells[r][c]:null;
