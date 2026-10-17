@@ -1258,10 +1258,21 @@ function beginWater(now){                          // 이어진 상태면 빠르
   G.tileMs=G.fast?FAST_MS:ST[state.stage].tile*state.speed;
   setHud();
   say('',G.fast?'음악이 빠르게 흘러요':'음악이 천천히 흘러요',G.fast?'파이프가 모두 이어져 있어요.':'음악보다 앞서 끊긴 곳을 이어 주세요. 다 이으면 빨라져요.');
-  G.backed=false;
+  G.backed=false;G.mel=false;
   if(G.fast){                                      // 파이프가 모두 이어진 채로 흐르면: 물이 첫 탱크에 닿는 때에 맞춰 화음·반주가 함께 시작
     const lead=M.free?0:(G.tileMs*(cells[M.rin][0].full?1:.25)+2.5*G.tileMs)/1000;
     playChord(M.pc,lead,M.fl);playBacking(lead,R.m);G.backed=true;
+    {                                                // 멜로디도 반주와 같은 오디오 시계로 미리 예약: 물 애니메이션이 늦어져도 소리는 박자에 정확히 맞음
+      const rows=traceConn().rows,seq=[];let ok=true;
+      for(let b=0;b<NB()&&ok;b++){
+        if(rows[b]===undefined)break;
+        const n=TOP-rows[b],prev=b===0?entryNote():seq[b-1];
+        if(!judgeNote(R.m,b,n,prev).ok)break;
+        seq.push(n);
+        tone(fOf(n,M.fl),lead+ONS(b)*BEAT,Math.max(.2,Math.min(isW()?2.6:1.3,DUR(b)*BEAT*.95)),.1);
+      }
+      G.mel=true;
+    }
   }
   beginFlow(now);ensureLoop();
 }
@@ -1350,7 +1361,7 @@ function enter(r,c,entry,now){
 function passNote(cell,now){                       // 음 탱크: 같은 화음의 구성음이면 소리가 나고 다음 박으로 이어짐
   cell.el.classList.add('hit','cl','cr');cell.locked=true;
   R.cur[cell.b]=cell.n;
-  if(G.fast)tone(fOf(cell.n),0,.7,.12);          // 이어진 완제품이 흐를 때만 소리: 물이 탱크를 지나며 음이 하나씩 울림(느린 압박용 물은 소리 없음)
+  if(G.fast&&!G.mel)tone(fOf(cell.n),0,.7,.12);          // 이어진 완제품이 흐를 때만 소리: 물이 탱크를 지나며 음이 하나씩 울림(느린 압박용 물은 소리 없음)
   if(cell.b===NB()-1)return win();
   const role=roleOf(cell.jd||{cls:'g'},cell.n);
   say('',`${cell.b+1}박 ‘${nameOf(cell.n)}’ 통과 · ${role}`,'음악은 다음 줄로 이어져요.');
