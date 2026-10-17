@@ -539,9 +539,11 @@ function ensureAC(){
 }
 let tap=null;                                          // 내보내기 녹음 중에만 잡히는 출력(소리를 예약하는 순간에만 켬)
 const to=g=>{g.connect(ac.destination);if(tap)g.connect(tap);};
+let _n=null,_nAc=null;                                  // 소리 예약의 기준 시각: 한 번에 여러 마디를 예약할 때(수백 개의 소리) 만드는 사이에 시계가 흘러 뒤로 갈수록 밀리지 않게, 같은 작업 안에서는 시각을 고정함
+const acNow=()=>{if(_n===null||_nAc!==ac){_n=ac.currentTime;_nAc=ac;Promise.resolve().then(()=>{_n=null;});}return _n;};
 function tone(f,t,d,v,type){
   if(!ac||!state.sound)return;
-  const o=ac.createOscillator(),g=ac.createGain(),t0=ac.currentTime+(t||0);
+  const o=ac.createOscillator(),g=ac.createGain(),t0=acNow()+(t||0);
   o.type=type||'triangle';o.frequency.value=f;
   g.gain.setValueAtTime(0.0001,t0);
   g.gain.exponentialRampToValueAtTime(v||.08,t0+.015);
@@ -764,7 +766,7 @@ const bt=(f,t,d,v,ty)=>tone(f,t,d,v*BK,ty);
 function drumHit(kind,t,v){
   v*=BK;                          // 합성 드럼: 킥(저음이 툭 떨어짐) · 스네어(노이즈+톡) · 하이햇(높은 노이즈)
   if(!ac||!state.sound)return;
-  const t0=ac.currentTime+t;
+  const t0=acNow()+t;
   if(kind==='kick'){
     const o=ac.createOscillator(),g=ac.createGain();
     o.frequency.setValueAtTime(165,t0);o.frequency.exponentialRampToValueAtTime(42,t0+.13);
@@ -781,7 +783,7 @@ function drumHit(kind,t,v){
 function padTone(f,t,d,v){
   v*=BK;                           // 부드럽게 길게 울리는 소리
   if(!ac||!state.sound)return;
-  const o=ac.createOscillator(),g=ac.createGain(),t0=ac.currentTime+t;
+  const o=ac.createOscillator(),g=ac.createGain(),t0=acNow()+t;
   o.type='sine';o.frequency.value=f;
   g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(v,t0+.25);g.gain.setValueAtTime(v,t0+d-.35);g.gain.exponentialRampToValueAtTime(.0001,t0+d);
   o.connect(g);to(g);o.start(t0);o.stop(t0+d+.05);
@@ -1493,7 +1495,7 @@ function playOverview(){
   };
   const key=[[.25,0],...tk.map(t=>[t.t,lenAt(t)])];
   const nds=[...el.querySelectorAll('.nd')],sn=[...el.querySelectorAll('.sn')],sl=[...el.querySelectorAll('.slot-on')];
-  const t0=performance.now(),end=D+(cnt-1)*DT+ONS(3,cnt-1)*BEAT+.1;
+  let t0=performance.now();const end=D+(cnt-1)*DT+ONS(3,cnt-1)*BEAT+.1;
   ov={el,raf:0};
   const frame=now=>{
     if(!ov||ov.el!==el)return;
@@ -1509,6 +1511,7 @@ function playOverview(){
   };
   ov.raf=requestAnimationFrame(frame);
   el.addEventListener('click',()=>closeOverview());
+  t0=performance.now();                                   // 소리 예약 직전에 화면 시계를 맞춤(예약하는 동안 소리와 화면이 어긋나지 않게)
   for(let i=0;i<cnt;i++)playNotes(R.done[i],R.meas[i].pc,D+i*DT,i);
 }
 function playMelody(only){                         // 물이 흐르는 박자에 맞춰 소리·화면이 함께 진행 (입구 쪽 물 이동은 생략하고 바로 시작)
