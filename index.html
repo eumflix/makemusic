@@ -83,6 +83,7 @@ button.mc{font:inherit;color:inherit;cursor:pointer}
 .rm .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .rm .ro{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:8px 6px 6px;display:grid;justify-items:center;gap:2px;cursor:pointer}
 .rm .ro svg{color:var(--ink)}
+.rm .ro.wide{grid-column:1/-1}
 .rm .ro b{font-size:12.5px;font-weight:600}
 .rm .ro[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 2px var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--bg))}
 .band{display:flex;flex-wrap:wrap;align-items:center;gap:8px 6px}
@@ -364,7 +365,6 @@ body:not(.s1) #chordView{display:none}
 </style>
 </head><body>
 
-
 <div class="app">
   <h1 class="sr">음정 선택</h1>
   <header class="top">
@@ -561,7 +561,7 @@ function mkMeasure(rn,mi){                            // 한 마디는 한 화�
     return all.filter(n=>correct(n)||wr.includes(n));
   });
   const rec=opens.map(o=>{const c=o.filter(n=>pc.includes(n%7));return c[rand(c.length)];});   // 레벨 1 힌트: 무작위 추천 선율
-  return {rn,pc,opens,rec,fl:CD[rn].fl};
+  return {rn,pc,opens,rec,fl:CD[rn].fl,whole:isW(mi)};
 }
 function newRun(){
   stopPlay();
@@ -619,7 +619,7 @@ function startMeasure(){
   }
   setHud();
   const nm=M.rin===undefined?'':nameOf(TOP-M.rin);
-  say('',`${R.m+1}마디 · ${M.rn} 화음`,isW()?`마지막 마디는 종지의 느낌을 주는 온음표 하나예요. 으뜸음 ‘${sn(M.pc[0],M.fl)}’을 낮게 할지 높게 할지만 골라요. 앞 마디의 마지막 음 ‘${nm}’에서 이어져요.`:`${ST[state.stage].desc} ${R.m===0?'첫 음 탱크를 골라 시작해요.':`앞 마디의 마지막 음 ‘${nm}’에서 이어져요.`} 깜빡이는 곳에서 시작해 다음 음 탱크까지 끌어 보세요. 파이프를 놓기 시작하면 3초 뒤 음악이 흘러요.`);
+  say('',`${R.m+1}마디 · ${M.rn} 화음`,isW()?(W8?`마지막 마디는 종지의 느낌을 주는 온음표 하나예요. 으뜸음 ‘${sn(M.pc[0],M.fl)}’을 낮게 할지 높게 할지만 골라요. 앞 마디의 마지막 음 ‘${nm}’에서 이어져요.`:`마지막 마디는 종지의 느낌을 주는 온음표 하나예요. 화음의 구성음(${M.pc.map(p=>sn(p,M.fl)).join('·')}) 중 하나로 길게 끝내요. 앞 마디의 마지막 음 ‘${nm}’에서 이어져요.`):`${ST[state.stage].desc} ${R.m===0?'첫 음 탱크를 골라 시작해요.':`앞 마디의 마지막 음 ‘${nm}’에서 이어져요.`} 깜빡이는 곳에서 시작해 다음 음 탱크까지 끌어 보세요. 파이프를 놓기 시작하면 3초 뒤 음악이 흘러요.`);
   if(sp&&isComplete())onPipesChanged(true);
 }
 function fillWater(anim,skip){                          // 완성한 마디의 물을 채움. anim이면 들어보기용으로 박자에 맞춰 흐름
@@ -747,7 +747,7 @@ const RHY=[
 ];
 const rhOf=m=>state.rh[m==null?R.m:m];
 let W8=false,LOCK=false;                                            // 장조·단조연습: 8마디는 온음표 하나(으뜸음, 옥타브만 고름)
-const isW=m=>W8&&(m==null?R.m:m)===NM-1;
+const isW=m=>(m==null?R.m:m)===NM-1&&(W8||(clv===3&&state.rh[NM-1]===6));   // 장조·단조연습은 늘 온음표, 자유작곡은 8마디 리듬에서 ‘온음표’를 고르면 온음표
 const NB=m=>isW(m)?1:4;                                   // 그 마디의 음 개수(박 칸 수)
 const rhd=m=>isW(m)?[4,0,0,0]:RHY[rhOf(m)].d;
 const DUR=(j,m)=>rhd(m)[j];                       // j번째 음의 길이(박)
@@ -859,23 +859,31 @@ function rollDice(host,done){                          // 랜덤 선택 공통: 
   };
   ensureAC();dd.classList.add('roll');tick.n=0;requestAnimationFrame(tick);
 }
+function fixWhole8(){                                     // 자유작곡 8마디의 온음표 선택이 바뀌면 그 마디 판을 새로 시작(음 칸 수가 달라지므로)
+  if(!R||!R.meas||!R.meas[NM-1]||R.meas[NM-1].whole===isW(NM-1))return;
+  R.meas[NM-1]=mkMeasure(PROG[NM-1],NM-1);R.done[NM-1]=null;R.pipes[NM-1]=null;R.routes[NM-1]=null;
+  if(R.m===NM-1){stopPlay();startMeasure();}
+}
 function openRhythm(){
   if(document.querySelector('.rm'))return;
-  if(isW()){say('','8마디는 온음표예요','마지막 마디는 온음표 하나로 끝나서 리듬을 고르지 않아요. 도를 높게 할지 낮게 할지만 골라요.');return;}
-  const mi=R.m,cards=()=>RHY.map((r,i)=>`<button type="button" class="ro" data-i="${i}" aria-pressed="${i===state.rh[mi]}"><svg width="130" height="46" viewBox="0 0 130 46" aria-hidden="true">${rhyMini(i,130,46)}</svg><b>${r.name}</b></button>`).join('');
+  if(W8&&R.m===NM-1){say('','8마디는 온음표예요','마지막 마디는 온음표 하나로 끝나서 리듬을 고르지 않아요. 도를 높게 할지 낮게 할지만 골라요.');return;}
+  const mi=R.m,last8=mi===NM-1&&clv===3;                  // 자유작곡 8마디: 마지막 두 리듬 자리에 온음표 하나(두 칸 크기)
+  const cards=()=>RHY.map((r,i)=>last8&&i>=4?'':`<button type="button" class="ro" data-i="${i}" aria-pressed="${i===state.rh[mi]}"><svg width="130" height="46" viewBox="0 0 130 46" aria-hidden="true">${rhyMini(i,130,46)}</svg><b>${r.name}</b></button>`).join('')
+    +(last8?`<button type="button" class="ro wide" data-i="6" aria-pressed="${state.rh[mi]===6}"><svg width="268" height="46" viewBox="0 0 268 46" aria-hidden="true">${rhyMini('W',268,46)}</svg><b>온음표 (끝나는 느낌)</b></button>`:'');
   const m=mk('div','rm',`<div class="box" role="dialog" aria-modal="true" aria-label="${mi+1}마디 리듬 고르기"><h3>${mi+1}마디 리듬 고르기</h3><p>4/4박자에서 많이 쓰는 음표 4개짜리 리듬이에요. 마디마다 따로 고르고, 악보와 연주(음악이 흐르는 속도)에 적용돼요.</p><div class="grid">${cards()}</div><div class="rr"><button type="button" class="rnd" data-k="one">🎲 이 마디 랜덤</button><button type="button" class="rnd" data-k="all">🎲 모든 마디 랜덤</button></div><button type="button" class="ok">확인</button></div>`);
   document.body.appendChild(m);
   const close=()=>{m.remove();stopPlay();};
-  const pv=()=>{const d=RHY[state.rh[mi]].d;d.forEach((x,j)=>tone(FREQ[0]*2,.05+ONS(j,mi)*BEAT,Math.max(.2,x*BEAT*.9),.1));};
-  const refresh=()=>{m.querySelectorAll('.ro').forEach(x=>x.setAttribute('aria-pressed',+x.dataset.i===state.rh[mi]));renderHeads();setHud();};
+  const pv=()=>{const d=state.rh[mi]===6?[4]:RHY[state.rh[mi]].d;d.forEach((x,j)=>tone(FREQ[0]*2,.05+ONS(j,mi)*BEAT,Math.max(.2,x*BEAT*.9),.1));};
+  const refresh=()=>{m.querySelectorAll('.ro').forEach(x=>x.setAttribute('aria-pressed',+x.dataset.i===state.rh[mi]));fixWhole8();renderHeads();setHud();};
   m.addEventListener('click',e=>{
     const b=e.target.closest('.ro'),rn=e.target.closest('.rnd');
     if(b){state.rh[mi]=+b.dataset.i;ensureAC();refresh();pv();return;}
     if(rn){
       const all=rn.dataset.k!=='one';
       rollDice(m.querySelector('.box'),()=>{
-        if(!all){let k;do{k=rand(RHY.length);}while(k===state.rh[mi]);state.rh[mi]=k;}
-        else state.rh=state.rh.map(()=>rand(RHY.length));
+        const pool=i=>i===NM-1&&clv===3?[0,1,2,3,6]:RHY.map((_,k)=>k);
+        if(!all){const P=pool(mi);let k;do{k=P[rand(P.length)];}while(k===state.rh[mi]&&P.length>1);state.rh[mi]=k;}
+        else state.rh=state.rh.map((_,i)=>{const P=pool(i);return P[rand(P.length)];});
         refresh();pv();
       });return;
     }
@@ -1784,7 +1792,7 @@ $('#stageSeg').addEventListener('click',e=>{
       if(rt!=null)set.add(TOP-rt);               // 지금 이어 둔 탱크도 유지
       return [...set];
     });
-    return {rn:mm.rn,pc:mm.pc,opens,rec:mm.rec,fl:mm.fl};
+    return {rn:mm.rn,pc:mm.pc,opens,rec:mm.rec,fl:mm.fl,whole:mm.whole};
   });
   startMeasure();
 });
