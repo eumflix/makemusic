@@ -40,7 +40,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 
 .top{display:none}   /* 단계 표시 줄은 삭제: 코드 선택은 음정 선택 카드의 버튼으로 */
 .vseg .tochord{background:var(--fSs);border-color:var(--fS);color:var(--ink);font-weight:600}
-@media (max-width:380px){.hud .lvcard{order:-1;grid-template-columns:1fr 1fr;gap:4px;align-content:start}.vseg{display:contents}.vseg .tochord{order:1}.lvcard .helpbtn{grid-column:auto;order:2;margin:0;text-align:center;padding:5px 4px}.vseg button[data-s]{order:3}}
+@media (max-width:380px){.hud .lvcard{order:-1;grid-template-columns:1fr 1fr;gap:4px;align-content:start}.vseg{display:contents}.vseg .tochord{order:1}.lvcard .helpbtn{grid-column:auto;order:2;margin:0;text-align:center;padding:5px 4px}}
 .flow{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
 .flow li{display:flex;align-items:center;gap:6px;padding:3px 11px 3px 4px;border-radius:99px;border:1px solid var(--line);background:var(--surface);font-size:13px;color:var(--muted)}
 .flow b{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--line);color:var(--ink);font:600 11px var(--f-ui)}
@@ -124,6 +124,39 @@ button.mc{font:inherit;color:inherit;cursor:pointer}
 .vseg button{border:1px solid var(--line);border-radius:10px;border-right:1px solid var(--line);text-align:left;white-space:nowrap;padding:5px 10px;font-size:13px;line-height:1.35;min-width:0;background:var(--bg)}
 .vseg button:last-child{border-right:1px solid var(--line)}
 .vseg button[aria-pressed="true"]{border-color:var(--accent)}
+.vseg .mb{white-space:normal;line-height:1.25;font-weight:500;min-width:0}.vseg .mb[hidden]{display:none}
+.vseg .mb small{display:block;font-size:11px;color:var(--muted);font-weight:400}.vseg .mb .ar{float:right;color:var(--accent);font-size:11px}
+.vseg .mb.guide{background:#D9F3EC;border-color:#0E9060;font-weight:600}.vseg .mb.guide small{color:#0b6b49}
+.vseg .mb.real{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}.vseg .mb.real small{color:#E4E1FF}.vseg .mb.real .ar{color:#fff}
+.vseg .mb.on{background:#EDEAFF;border:1.5px solid var(--accent);font-weight:600}.vseg .mb.on small{color:var(--accent)}
+.vseg .mb.locked{opacity:.55}
+.tdim{position:fixed;inset:0;z-index:85;background:rgba(24,14,60,.58)}
+.tring{position:fixed;z-index:85;border:3px solid #FFD23F;border-radius:12px;pointer-events:none;box-shadow:0 0 0 3px rgba(255,210,63,.25)}
+.tring.pulse{animation:tpulse 1.3s ease-in-out infinite}@keyframes tpulse{50%{border-color:#fff;box-shadow:0 0 0 6px rgba(255,255,255,.2)}}
+.tcoach{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(10px + env(safe-area-inset-bottom,0px));width:calc(100% - 24px);max-width:540px;z-index:86;background:var(--surface);border:2px solid var(--accent);border-radius:16px;padding:10px 14px 12px;box-shadow:0 8px 28px rgba(20,10,60,.38);font-size:13.5px;line-height:1.5;color:var(--ink)}
+.tcoach .tp{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);margin-bottom:4px}.tcoach .bar{flex:1;height:5px;border-radius:3px;background:#E6E1F2;overflow:hidden}.tcoach .bar i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.tcoach .th{display:block;font-size:15.5px;font-weight:700;margin-bottom:3px}.tcoach .th.ok{color:var(--good)}.tcoach .th.no{color:var(--bad)}
+.tcoach p{margin:0 0 8px}.tcoach .tb{display:flex;gap:8px;align-items:center}.tcoach .tb button{flex:1;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:8px;font:inherit;font-weight:600;color:var(--ink)}
+.tcoach .tb button.pri{flex:2;background:var(--accent);border-color:var(--accent);color:var(--on-accent)}.tcoach .tb button.gh{flex:0 0 auto;border:0;background:none;color:var(--muted);font-weight:400;text-decoration:underline;padding:8px 4px}
+.tcoach .rl{color:var(--muted);font-size:12px}
+.tcoach .th.fin{font-size:18px;color:var(--good)}.tcoach .prog{display:block;font-size:15px;letter-spacing:.2px;margin:2px 0 6px}.tcoach .recap{display:block;font-size:13px;line-height:1.6;color:var(--muted);margin:0 0 8px}
+.tcoach .th.big{font-size:21px;line-height:1.3;color:var(--accent);margin:2px 0 4px}.tcoach p.sub{font-size:13px;color:var(--muted);margin:0 0 8px}.tcoach .th.big.no{color:var(--bad)}
+.tcoach.lite{padding:7px 12px 8px}.tcoach.lite .th{font-size:14px;margin-bottom:2px}.tcoach.lite p{margin:0 0 5px;font-size:13px;line-height:1.45}.tcoach.lite .tb button{padding:5px 8px;font-size:13px}
+body.tplock #toChord,body.tplock #modeBtn,body.tplock #helpBtn,body.tplock #rbtn,body.tplock #tbtn,body.tplock #fl1,body.tplock #redo1,body.tplock #restart{pointer-events:none;opacity:.5}
+body.tplite{padding-bottom:150px}body.tplock .rm{z-index:95}
+.sheetwrap{position:fixed;inset:0;z-index:70;background:rgba(30,20,80,.16);display:flex;align-items:flex-end;justify-content:center}
+.sheet2{width:100%;max-width:560px;background:var(--surface);border-radius:18px 18px 0 0;border-top:1px solid var(--line);box-shadow:0 -8px 24px rgba(30,20,80,.18);padding:14px 14px calc(14px + env(safe-area-inset-bottom,0px));font-size:14px;line-height:1.5}
+.sheet2 h3{margin:0 0 8px;font-size:16px}.sheet2 p{margin:4px 0 8px;color:var(--muted);font-size:13px}
+.sheet2 .choice{display:block;width:100%;text-align:left;border:1.5px solid var(--line);border-radius:12px;background:var(--bg);padding:9px 11px;margin-bottom:7px;font:inherit;color:var(--ink)}
+.sheet2 .choice b{display:block;font-size:15px}.sheet2 .choice span{font-size:12.5px;color:var(--muted)}
+.sheet2 .choice.g[aria-pressed="true"]{border-color:#0E9060;background:#E8F8F2}.sheet2 .choice.r[aria-pressed="true"]{border-color:var(--accent);background:#F1EFFF}
+.sheet2 .tgl{display:flex;align-items:center;gap:10px;width:100%;border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:8px 10px;font:inherit;font-weight:600;color:var(--ink);margin-bottom:8px;text-align:left}
+.sheet2 .tgl .sw{flex:none;width:34px;height:20px;border-radius:11px;background:#CFC9DF;position:relative}.sheet2 .tgl .sw:after{content:"";position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:#fff;transition:left .15s}
+.sheet2 .tgl[aria-pressed="true"]{border-color:var(--accent);background:#F1EFFF}.sheet2 .tgl[aria-pressed="true"] .sw{background:var(--accent)}.sheet2 .tgl[aria-pressed="true"] .sw:after{left:17px}
+.sheet2 .stp{display:flex;align-items:center;gap:8px;margin:4px 0 8px}.sheet2 .stp .lb{flex:none;width:80px;font-weight:600;font-size:13px}.sheet2 .stp output{flex:1;text-align:center;font-weight:600}
+.sheet2 .stp button{flex:none;width:42px;height:34px;border:1px solid var(--accent);border-radius:9px;background:var(--surface);color:var(--accent);font-size:18px;line-height:1}.sheet2 .stp button:disabled{opacity:.35}
+.sheet2.off .sdesc{opacity:.45;pointer-events:none}
+.sheet2 .close{display:block;width:100%;margin-top:6px;border:0;border-radius:10px;background:var(--accent);color:var(--on-accent);font:600 15px/1.2 inherit;padding:10px}
 .bar{height:7px;border-radius:99px;background:var(--line);overflow:hidden}
 #tfill{height:100%;width:100%;background:var(--water);border-radius:99px}
 body[data-phase="flow"] #tfill,body[data-phase="done"] #tfill{opacity:.35}
@@ -262,6 +295,7 @@ body[data-phase="flow"] #tfill,body[data-phase="done"] #tfill{opacity:.35}
 @media (prefers-reduced-motion:reduce){.tour .tspot,.tour .tip{transition:none;animation:none}}
 @media (max-width:380px){.helpbtn{grid-column:1/-1}}
 @media (max-width:380px){.hud{grid-template-columns:1fr}.vseg{grid-template-columns:1fr 1fr}}
+@media (max-width:380px){.vseg .mb{order:3;grid-column:1/-1}.lvcard .helpbtn{grid-column:auto!important;align-self:stretch}}
 @media (prefers-reduced-motion:reduce){.slot.pop .pipe,.slot.shake .pipe,.spill,.tank.bad .body,.next{animation:none}.wheel{transition:none}}
 
 /* 1단계(코드 선택): 화음 기능 색 — 안정(보라) · 이동(민트) · 긴장(코랄) */
@@ -404,12 +438,11 @@ body:not(.s1) #chordView{display:none}
     </div>
     </div>
     <div class="card lvcard">
-      <div class="seg vseg" id="stageSeg" role="group" aria-label="레벨">
+      <div class="seg vseg" id="stageSeg" role="group" aria-label="연습 설정">
         <button type="button" class="tochord" id="toChord">← 코드 선택</button>
-        <button type="button" aria-pressed="false" data-s="0">화성음만</button>
-        <button type="button" aria-pressed="true" data-s="1">화성음 연습</button>
-        <button type="button" aria-pressed="false" data-s="2">비화성음 연습</button>
-        <button type="button" aria-pressed="false" data-s="3">자유 비화성음</button>
+        <button type="button" class="mb" id="modeBtn" aria-haspopup="dialog"></button>
+        <button type="button" class="mb" id="nctBtn" aria-haspopup="dialog" hidden></button>
+        <button type="button" class="mb" id="leapBtn" aria-haspopup="dialog" hidden></button>
       </div>
       <button type="button" class="helpbtn" id="helpBtn" aria-haspopup="dialog">? 설명 보기</button>
     </div>
@@ -418,7 +451,7 @@ body:not(.s1) #chordView{display:none}
   <div class="boardwrap" id="bwrap">
     <div class="stage" id="stage"><div class="mview" id="mview">
       <div class="heads" id="heads"></div>
-      <div class="board" id="board" role="group" aria-label="한 마디 판. 불이 켜진 음에서 다음 음 탱크까지 끌면 파이프가 이어집니다. 파이프 칸을 누르면 모양이 바뀝니다"></div>
+      <div class="board" id="board" role="group" aria-label="한 마디 판. 불이 켜진 음에서 다음 음 칸까지 끌면 음끼리 이어집니다. 이어진 칸을 누르면 연결 모양이 바뀝니다"></div>
     </div></div>
     <svg id="rub" aria-hidden="true"></svg>
     <p class="cap2">음을 터치하거나 음끼리 선을 이어보세요</p>
@@ -438,6 +471,7 @@ body:not(.s1) #chordView{display:none}
     <button type="button" class="sm" id="restart">처음부터 다시하기</button>
     <button type="button" class="sm" id="hnt" aria-pressed="false">힌트</button>
     <button type="button" class="sm" id="xpt">음악 다운로드</button>
+    <button type="button" class="sm" id="pTutBtn" hidden>▶ 가이드</button>
   </div>
   </div>
 
@@ -476,11 +510,10 @@ const PIPES={
   SW:{o:[2,3],d:'M50 76Q50 38 0 38'},WN:{o:[3,0],d:'M0 38Q50 38 50 0'}};
 const CYCLE=[null,'H','V','NE','ES','SW','WN'];     // 칸을 누를 때마다 바뀌는 순서
 const ST=[                                         // 레벨 1~4 (물이 오는 시간과 흐름은 모두 느긋하게)
-  {desc:'어울리는 음만 열려 있어요. 어디에 이어도 정답이에요.',wrongs:0,tile:2200},
-  {desc:'모든 칸이 열려 있어요. 이 마디에 어울리는 음에만 이어 보세요.',wrongs:9,tile:1900},
-  {desc:'모든 칸이 열려 있어요. 어울리는 음 사이를 이어 주는 ‘지나가는 음’(약박에서 한 칸씩)도 쓸 수 있어요.',wrongs:9,tile:1750},
-  {desc:'가요처럼 더 다양한 음을 써요. 살짝 낯선 음도 쓸 수 있지만, 마디와 크게 부딪히는 음(빨강)은 안 돼요.',wrongs:9,tile:1600}];
-const state={stage:1,preset:0,speed:1,hint:false,sound:true,tempo:1,en:false,inst:{drum:1,bass:1,pad:1},rh:new Array(8).fill(0)};   // rh: 마디별 리듬 번호   // 기본: 레벨 2(모든 탱크 열림, 오답 있음), 힌트 꺼짐
+  {desc:'화성음만 열려 있어요. 어디에 이어도 정답이에요.',wrongs:0,tile:2200},
+  {desc:'모든 칸이 열려 있어요. 이 마디의 화성음에만 이어 보세요.',wrongs:9,tile:1900},
+  {desc:'모든 칸이 열려 있어요. 화성음 사이를 이어 주는 비화성음(‘지나가는음/이웃하는음’)도 약박에서 한 칸씩 쓸 수 있어요.',wrongs:9,tile:1750}];
+const state={stage:1,preset:0,speed:1,hint:false,sound:true,tempo:1,en:false,inst:{drum:1,bass:1,pad:1},rh:new Array(8).fill(0),mode:'real',nctOn:false,nct2:null,nct4:null,leapOn:false,leap:5};   // rh: 마디별 리듬 번호   // 기본: 레벨 2(모든 탱크 열림, 오답 있음), 힌트 꺼짐
 const COUNT_MS=3000;let FAST_MS=150;   // 완성 뒤 빠른 흐름: 타일 150ms → 한 박 0.43초(선율 들어보기와 같은 속도)
                       // 첫 파이프 뒤 카운트다운 · 완성돼 있을 때 물 빠르기 배율
 /* ---------- 레벨별 음 판정 ---------- */
@@ -490,24 +523,45 @@ Object.assign(TAB,{Imaj7:TAB.I,ii7:TAB.ii,vi7:TAB.vi,V7:TAB.V,I7:TAB.I,IV7:TAB.I
 const popCls=(rn,n)=>CD[rn].pc.includes(n%7)?'g':TAB[rn][((n%7)-CH[rn]+7)%7];
 const entryNote=()=>M.rin===undefined?undefined:TOP-M.rin;                       // 입구(앞 음)의 음 번호
 const prevNoteFor=b=>b===0?entryNote():R.cur[b-1];
-function judgeNote(m,b,n,prev){                    // {ok, cls, why}
+const NCTV=[null,0,1,2,3,4,5,6,7,8],LEAPV=[3,4,5,6,7,8];
+const syncStage=()=>{state.stage=state.mode==='easy'?0:state.nctOn?2:1;if(!state.nctOn&&state.leap<4)state.leap=4;};   // 초보=화성음만 · 실전=모든 칸 열림(비화성음을 켜면 규칙 추가)
+const leapMin=()=>state.nctOn?3:4;                    // 비화성음이 꺼져 있으면 화성음끼리가 3도 간격이라 3도 금지는 불가능
+const resetOpts=()=>{state.nctOn=false;state.nct2=null;state.nct4=null;state.leapOn=false;state.leap=5;syncStage();};
+const isNCT=(i,n)=>!R.meas[i].pc.includes(n%7);
+function nctUsed(m,cur,bt){                        // 곡 전체에서 bt번째 박(1=2박, 3=4박)에 이미 쓴 비화성음 수(m마디는 지금 이어 둔 앞 박만 셈)
+  let c=0;
+  for(let i=0;i<NM;i++){
+    if(i===m){if(cur[bt]!==undefined&&isNCT(i,cur[bt]))c++;continue;}
+    const d=R.done[i];if(d&&!isW(i)&&isNCT(i,d[bt]))c++;
+  }
+  return c;
+}
+function judgeNote(m,b,n,prev,cur){                 // 기본 판정 + (실전 모드) 도약금지
+  const jd=judgeBase(m,b,n,prev,cur);
+  if(jd.ok&&state.mode==='real'&&state.leapOn&&prev!==undefined&&!isW(m)&&Math.abs(n-prev)+1>=state.leap)
+    return {ok:false,cls:null,why:`앞 음에서 ${Math.abs(n-prev)+1}도나 뛰었어요. 지금은 ${state.leap}도 이상 뛰는 도약이 금지예요. 더 가까운 음으로 이어 주세요.`};
+  return jd;
+}
+function judgeBase(m,b,n,prev,cur){
+  cur=cur||R.cur;                    // {ok, cls, why}
   const mm=R.meas[m],chord=mm.pc.includes(n%7),nm=sn(n,mm.fl),st=state.stage;
-  if(st<=1)return chord?{ok:true,cls:'g'}:{ok:false,cls:null,why:`이 마디에 어울리는 음(${mm.pc.map(p=>sn(p,mm.fl)).join('·')})이 아니에요.`};
-  if(st===3){const c=popCls(mm.rn,n);return c==='r'?{ok:false,cls:'r',why:`‘${nm}’는 이 마디와 부딪히는 음이라 쓰면 안 돼요.`}:{ok:true,cls:c};}
+  if(st<=1)return chord?{ok:true,cls:'g'}:{ok:false,cls:null,why:`이 마디의 화성음(${mm.pc.map(p=>sn(p,mm.fl)).join('·')})이 아니에요.`};
   const prevNCT=prev!==undefined&&(b===0?(m>0&&!R.meas[m-1].pc.includes(prev%7)):!mm.pc.includes(prev%7));
   if(chord){
-    if(prevNCT&&Math.abs(n-prev)!==1)return {ok:false,cls:null,why:'앞의 낯선 음 다음에는 바로 옆 칸의 어울리는 음으로 가야 해요.'};
+    if(prevNCT&&Math.abs(n-prev)!==1)return {ok:false,cls:null,why:b===0?`앞 마디 4박의 ‘${sn(prev,R.meas[m-1].fl)}’가 비화성음이라서, 이 마디 첫 음은 그 음 바로 옆 칸의 화성음이어야 해요. 4박 음부터 다시 생각해 보세요.`:'앞의 비화성음 다음에는 바로 옆 칸의 화성음으로 가야 해요.'};
     return {ok:true,cls:'g'};
   }
-  if(b%2===0)return {ok:false,cls:null,why:`1·3박(강박)에는 어울리는 음만 올 수 있어요. 다른 음은 2·4박(약박)에서 써요.`};
+  if(b%2===0)return {ok:false,cls:null,why:`1·3박(강박)에는 화성음만 올 수 있어요. 비화성음은 2·4박(약박)에서 써요.`};
   if(prev===undefined)return {ok:false,cls:null,why:'앞의 음을 먼저 이어 주세요.'};
-  if(prevNCT)return {ok:false,cls:null,why:'어울리지 않는 음 다음에는 어울리는 음이 와야 해요.'};
-  if(Math.abs(n-prev)!==1)return {ok:false,cls:null,why:'어울리지 않는 음은 앞 음에서 한 칸만 움직여서 쓸 수 있어요(지나가는 음).'};
-  if(W8&&m===NM-2&&b===3&&![1,6].includes(n%7))return {ok:false,cls:null,why:'다음 마디는 온음표 ‘도’라서, 낯선 음은 도 바로 옆(레·시)에서만 쓸 수 있어요.'};
-  if(m===NM-1&&b===NB(m)-1)return {ok:false,cls:null,why:'곡의 마지막 음은 어울리는 음으로 끝내요.'};
+  if(prevNCT)return {ok:false,cls:null,why:'비화성음 다음에는 화성음이 와야 해요.'};
+  if(Math.abs(n-prev)!==1)return {ok:false,cls:null,why:'비화성음은 앞 음에서 한 칸만 움직여서 쓸 수 있어요(지나가는음/이웃하는음).'};
+  if(W8&&m===NM-2&&b===3&&![1,6].includes(n%7))return {ok:false,cls:null,why:'다음 마디는 온음표 ‘도’라서, 비화성음은 도 바로 옆(레·시)에서만 쓸 수 있어요.'};
+  if(m===NM-1&&b===NB(m)-1)return {ok:false,cls:null,why:'곡의 마지막 음은 화성음으로 끝내요.'};
+  {const lim=b===1?state.nct2:state.nct4;
+   if(lim!==null&&nctUsed(m,cur,b)>=lim)return {ok:false,cls:null,why:lim===0?`이번 연습에서는 ${b+1}박에 비화성음을 쓰지 않아요. 화성음을 골라 주세요.`:`${b+1}박의 비화성음은 곡 전체에서 ${lim}번까지만 쓰기로 했어요(지금까지 ${nctUsed(m,cur,b)}번 사용). 이 칸에는 화성음을 골라 주세요.`};}
   return {ok:true,cls:'y'};
 }
-const roleOf=(jd,n)=>jd.cls==='g'?ROLE[M.pc.indexOf(n%7)]:jd.cls==='y'?(state.stage===2?'지나가는 음':'꽤 괜찮은 음'):'써도 되는 음';
+const roleOf=(jd,n)=>jd.cls==='g'?ROLE[M.pc.indexOf(n%7)]:jd.cls==='y'?(state.stage===2?'지나가는음/이웃하는음':'꽤 괜찮은 음'):'써도 되는 음';
 const PC=b=>2*b+1,NC=b=>2*b+2;                     // b번째 박의 퍼즐 열 · 음 열
 const opp=d=>(d+2)%4,rand=n=>Math.floor(Math.random()*n);
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=rand(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;};
@@ -579,7 +633,7 @@ function praiseFor(m,seq){                          // 마디를 완성했을 �
     f.push(`${n0(q[0])}${eun(q[0])} 온음표 하나로 길게 울려서, ‘이제 곡이 끝났다’는 종지의 느낌을 확실히 줬어요.`);
     f.push(q[0]>=7?'높은 도로 끝내서 밝고 시원하게 마무리됐어요.':'낮은 도로 끝내서 묵직하고 안정감 있게 마무리됐어요.');
   }else{
-    if(nct.length)f.push(`${[...new Set(nct.map(nm))].join('·')}${eun(nct[0])} 화음 밖의 음인데, 약박에서 한 칸씩만 움직여 지나가는 음으로 아주 자연스럽게 썼어요.`);
+    if(nct.length)f.push(`${[...new Set(nct.map(nm))].join('·')}${eun(nct[0])} 화음 밖의 음인데, 약박에서 한 칸씩만 움직여 지나가는음/이웃하는음으로 아주 자연스럽게 썼어요.`);
     if(prevLast!==undefined&&Math.abs(q[0]-prevLast)===1)f.push(`앞 마디 끝 음 ‘${nm(prevLast)}’에서 바로 이웃한 ‘${nm(q[0])}’로 시작해서, 마디와 마디가 매끄럽게 이어졌어요.`);
     else if(prevLast!==undefined&&q[0]===prevLast)f.push(`앞 마디 끝 음 ‘${nm(prevLast)}’를 그대로 이어받아서, 마디와 마디가 끊김 없이 이어졌어요.`);
     if(chordN.length>=3)f.push(`${chordN.map(p=>sn(p,mm.fl)).join('·')} 세 음을 모두 써서 ${mm.rn} 화음의 소리를 꽉 채웠어요.`);
@@ -603,7 +657,7 @@ function startMeasure(){
   const mm=R.meas[R.m];
   M={rn:mm.rn,pc:mm.pc,fl:mm.fl,opens:mm.opens,rec:mm.rec,free:R.m===0,rin:R.m===0?(R.pipes[0]?R.rin[0]:undefined):R.rin[R.m]};   // 1마디는 입구 없이 첫 음 탱크부터 시작(free)
   $('#board').classList.toggle('free',M.free);
-  R.cur=[];R.route=[];cancelAuto();dr=null;drawRub();
+  R.cur=[];R.route=[];cancelAuto();dr=null;drawRub();warn4Key=null;pend4=false;
   G={phase:'ready'};
   $('#mview').classList.toggle('narrow',true);   // 2마디부터는 앞 마디 끝음 열을 좁게
   buildBoard();
@@ -619,7 +673,7 @@ function startMeasure(){
   }
   setHud();
   const nm=M.rin===undefined?'':nameOf(TOP-M.rin);
-  say('',`${R.m+1}마디 · ${M.rn} 화음`,isW()?(W8?`마지막 마디는 종지의 느낌을 주는 온음표 하나예요. 으뜸음 ‘${sn(M.pc[0],M.fl)}’을 낮게 할지 높게 할지만 골라요. 앞 마디의 마지막 음 ‘${nm}’에서 이어져요.`:`마지막 마디는 종지의 느낌을 주는 온음표 하나예요. 화음의 구성음(${M.pc.map(p=>sn(p,M.fl)).join('·')}) 중 하나로 길게 끝내요. 앞 마디의 마지막 음 ‘${nm}’에서 이어져요.`):`${ST[state.stage].desc} ${R.m===0?'첫 음 탱크를 골라 시작해요.':`앞 마디의 마지막 음 ‘${nm}’에서 이어져요.`} 깜빡이는 곳에서 시작해 다음 음 탱크까지 끌어 보세요. 파이프를 놓기 시작하면 3초 뒤 음악이 흘러요.`);
+  say('',`${R.m+1}마디 · ${M.rn} 화음`,isW()?(W8?`마지막 마디는 종지의 느낌을 주는 온음표 하나예요. 으뜸음(‘${sn(M.pc[0],M.fl)}’)을 낮게 할지 높게 할지만 골라요. 앞 마디의 마지막 음 ‘${nm}’에서 이어져요.`:`마지막 마디는 종지의 느낌을 주는 온음표 하나예요. 화음의 구성음(${M.pc.map(p=>sn(p,M.fl)).join('·')}) 중 하나로 길게 끝내요. 앞 마디의 마지막 음 ‘${nm}’에서 이어져요.`):`${ST[state.stage].desc} ${R.m===0?'첫 음 칸을 골라 시작해요.':`앞 마디의 마지막 음 ‘${nm}’에서 이어져요.`} 깜빡이는 곳에서 시작해 다음 음 칸까지 끌어 보세요. 잇기 시작하면 3초 뒤 음악이 흘러나와요.`);
   if(sp&&isComplete())onPipesChanged(true);
 }
 function fillWater(anim,skip){                          // 완성한 마디의 물을 채움. anim이면 들어보기용으로 박자에 맞춰 흐름
@@ -710,7 +764,7 @@ function buildBoard(){
       }else if(c%2===1){
         const b=(c-1)/2,el=mk('button','slot'+(r%2?' alt':''));
         el.type='button';
-        el.setAttribute('aria-label',`${b+1}번째 박 ${nameOf(n)} 높이 칸, 눌러서 파이프 모양 바꾸기`);
+        el.setAttribute('aria-label',`${b+1}번째 박 ${nameOf(n)} 높이 칸, 눌러서 연결 모양 바꾸기`);
         cell={kind:'slot',b,r,c,pipe:null,locked:false,el};
         paint(cell);
         el.addEventListener('click',()=>onSlot(cell));
@@ -870,7 +924,7 @@ function openRhythm(){
   const mi=R.m,last8=mi===NM-1&&clv===3;                  // 자유작곡 8마디: 마지막 두 리듬 자리에 온음표 하나(두 칸 크기)
   const cards=()=>RHY.map((r,i)=>last8&&i>=4?'':`<button type="button" class="ro" data-i="${i}" aria-pressed="${i===state.rh[mi]}"><svg width="130" height="46" viewBox="0 0 130 46" aria-hidden="true">${rhyMini(i,130,46)}</svg><b>${r.name}</b></button>`).join('')
     +(last8?`<button type="button" class="ro wide" data-i="6" aria-pressed="${state.rh[mi]===6}"><svg width="268" height="46" viewBox="0 0 268 46" aria-hidden="true">${rhyMini('W',268,46)}</svg><b>온음표 (끝나는 느낌)</b></button>`:'');
-  const m=mk('div','rm',`<div class="box" role="dialog" aria-modal="true" aria-label="${mi+1}마디 리듬 고르기"><h3>${mi+1}마디 리듬 고르기</h3><p>4/4박자에서 많이 쓰는 음표 4개짜리 리듬이에요. 마디마다 따로 고르고, 악보와 연주(음악이 흐르는 속도)에 적용돼요.</p><div class="grid">${cards()}</div><div class="rr"><button type="button" class="rnd" data-k="one">🎲 이 마디 랜덤</button><button type="button" class="rnd" data-k="all">🎲 모든 마디 랜덤</button></div><button type="button" class="ok">확인</button></div>`);
+  const m=mk('div','rm',`<div class="box" role="dialog" aria-modal="true" aria-label="${mi+1}마디 리듬 고르기"><h3>${mi+1}마디 리듬 고르기</h3><p>4/4박자에서 많이 쓰는 음표 4개짜리 리듬이에요. 마디마다 따로 고르고, 악보와 연주(음악이 흘러가는 속도)에 적용돼요.</p><div class="grid">${cards()}</div><div class="rr"><button type="button" class="rnd" data-k="one">🎲 이 마디 랜덤</button><button type="button" class="rnd" data-k="all">🎲 모든 마디 랜덤</button></div><button type="button" class="ok">확인</button></div>`);
   document.body.appendChild(m);
   const close=()=>{m.remove();stopPlay();};
   const pv=()=>{const d=state.rh[mi]===6?[4]:RHY[state.rh[mi]].d;d.forEach((x,j)=>tone(FREQ[0]*2,.05+ONS(j,mi)*BEAT,Math.max(.2,x*BEAT*.9),.1));};
@@ -943,22 +997,34 @@ function traceConn(){                              // 입구에서 이어진 탱
 function hintCls(c){                               // 레벨별 힌트 색
   const st=state.stage;
   if(st===0)return M.rec&&M.rec[c.b]===c.n?'g':null;
-  if(st===1)return c.correct?'g':null;
-  if(st===3)return popCls(M.rn,c.n);
   const prev=c.b===0?entryNote():(R.route[c.b-1]!==undefined?TOP-R.route[c.b-1]:undefined);
+  if(st===1){const k=c.correct?'g':null;return k&&prev!==undefined&&!judgeNote(R.m,c.b,c.n,prev).ok?null:k;}
   if(c.b>0&&prev===undefined)return c.correct?'g':null;
   const jd=judgeNote(R.m,c.b,c.n,prev);return jd.ok?jd.cls:null;
 }
-const LEGEND=[[['g','추천 음 하나']],[['g','어울리는 음']],[['g','어울리는 음'],['y','지금 쓸 수 있는 지나가는 음']],[['g','어울리는 음'],['y','꽤 괜찮은 음'],['r','쓰면 안 되는 음']]];
+const LEGEND=[[['g','추천 음 하나']],[['g','화성음']],[['g','화성음'],['y','지금 쓸 수 있는 비화성음']]];
+let warn4Key=null,pend4=false,warn4Shown=false;
+function warn4(){                                  // 4박에 비화성음을 두면: 다음 마디 첫 음과의 연결을 한 번 알려 줌
+  if(warn4Shown||document.querySelector('.rm'))return;warn4Shown=true;
+  const n=TOP-R.route[3],nx=R.meas[R.m+1],ok=[n-1,n+1].filter(x=>x>=0&&x<NR&&nx.pc.includes(x%7)),nn=sn(n,M.fl);
+  const tail=ok.length?`다음 마디(${nx.rn} 화음)에서는 ${ok.map(x=>`‘${sn(x,nx.fl)}’`).join(' 또는 ')}만 첫 음이 될 수 있어요.`:`그런데 다음 마디(${nx.rn} 화음)에는 그 옆 칸에 화성음이 없어서 이어 갈 수가 없어요. 4박 음을 다시 골라 보세요.`;
+  const m=mk('div','rm',`<div class="box" role="dialog" aria-modal="true" aria-label="다음 마디도 생각했나요"><h3>잠깐만요, 다음 마디도 생각했나요?</h3><p style="font-size:14.5px;color:var(--ink);line-height:1.55;margin:6px 0 14px">4박에 비화성음 ‘${nn}’를 두면, <b>다음 마디 첫 음은 이 음과 한 칸(2도) 차이인 화성음</b>이어야 해요.<br>${tail}</p><button type="button" class="ok" style="margin:0">알겠어요</button></div>`);
+  document.body.appendChild(m);const close=()=>m.remove();
+  m.querySelector('.ok').onclick=close;m.addEventListener('click',e=>{if(e.target===m)close();});setTimeout(()=>m.querySelector('.ok').focus(),50);
+}
 function refreshGuide(){                           // 다음에 끌 곳과 후보 탱크를 표시
   const cn=traceConn();
   for(let b=0;b<4;b++)R.route[b]=cn.rows[b];   // 이어진 모양을 기준으로 다음 시작점을 정함
+  setTimeout(tpSync,0);
   cells.forEach(row=>row.forEach(c=>{
     c.el.classList.remove('next','cand');
     c.el.classList.remove('h-g','h-y','h-o','h-r');
     if(state.hint&&c.kind==='target'){const h=hintCls(c);if(h)c.el.classList.add('h-'+h);}
     if(c.kind==='target'){const k=c.r*9+c.c,h=c.el.classList.contains('hit');c.el.classList.toggle('cl',cn.L.has(k)||h);c.el.classList.toggle('cr',cn.Rr.has(k)||h);}
   }));
+  {const r3=cn.rows[3];
+   if(state.stage===2&&state.nct4!==0&&!isW()&&R.m<NM-1&&r3!==undefined&&isNCT(R.m,TOP-r3)){const k=R.m+':'+r3;if(k!==warn4Key){warn4Key=k;pend4=true;}}
+   else{warn4Key=null;pend4=false;}}
   renderHeads();
   if(G.phase==='done'&&G.result!=='fail')return;   // 실패 뒤에는 바로 고칠 수 있게 시작점을 계속 보여줌
   let nb=0;while(nb<NB()&&R.route[nb]!==undefined)nb++;
@@ -976,7 +1042,7 @@ function setHud(){
   $('#cname').textContent=`${R.m+1}마디 · ${M.rn}${M.rn.length>3?'':' '+CNAME[M.rn]}`;
   $('#cnotes').innerHTML=`<b class="cn${M.pc.length>3?' n4':''}">${M.pc.map(n=>sn(n,M.fl)).join('·')}</b>`;
   $('#rslot').innerHTML=`<button type="button" id="rbtn" class="rbtn" aria-haspopup="dialog">리듬 <svg width="46" height="20" viewBox="0 0 46 20" aria-hidden="true">${rhyMini(isW()?'W':rhOf(),46,20)}</svg></button><button type="button" id="tbtn" class="rbtn tpb" aria-label="템포">${TEMPO[state.tempo].nm}</button>`;
-  document.querySelectorAll('#stageSeg button').forEach(b=>{if(b.dataset.s===undefined)return;b.setAttribute('aria-pressed',+b.dataset.s===state.stage);b.classList.toggle('locked',LOCK&&+b.dataset.s!==0);b.setAttribute('aria-disabled',LOCK&&+b.dataset.s!==0?'true':'false');});
+  renderOptBtns();
   $('#hnt').setAttribute('aria-pressed',state.hint);$('#hnt').textContent='힌트';
   const lg=$('#legend');lg.hidden=!state.hint;if(state.hint)lg.innerHTML=LEGEND[state.stage].map(([c,t])=>`<span><i style="--c:var(--h-${c})"></i>${t}</span>`).join('');
   $('#band').innerHTML=INST.map(o=>{const v=state.inst[o.k];return `<button type="button" class="ib${v?'':' off'}" data-k="${o.k}" aria-label="${o.l}" title="${o.l}"><span class="ic">${o.ic}</span><span class="dots">${Array.from({length:o.n},(_,i)=>i+1).map(n=>`<i${v===n?' class="on"':''}></i>`).join('')}</span></button>`;}).join('');
@@ -990,6 +1056,7 @@ function setHud(){
   nx.textContent=last?'처음부터 들어보기':'다음마디 ▶';
   nx.classList.toggle('ready',can);nx.classList.toggle('off',!can);nx.setAttribute('aria-disabled',!can);
   $('#prev').disabled=R.m===0;
+  $('#pTutBtn').hidden=clv!==0;
   refreshGuide();
 }
 
@@ -1003,7 +1070,7 @@ function onSlot(cell){                             // 누를 때마다 모양이
       resetWater();R.done[R.m]=null;G={phase:'ready'};
       cell.pipe=null;paint(cell);R.route[cell.b]=undefined;
       setHud();onPipesChanged(true);
-      say('','파이프를 지웠어요','다시 이어 보세요. 다 이으면 음악이 흘러요.');
+      say('','이은 음을 지웠어요','다시 이어 보세요. 다 이으면 음악이 흘러나와요.');
       return;
     }
   }
@@ -1083,8 +1150,9 @@ const board=$('#board');
 document.addEventListener('pointerdown',()=>ensureAC(),{passive:true});
 document.addEventListener('touchend',()=>ensureAC(),{passive:true});
 let tapHist=[];
+let sideT=-1e9;
 function sideways(){
-  if(document.querySelector('.rm'))return;
+  if(document.querySelector('.rm')||performance.now()-sideT<12000)return;sideT=performance.now();
   const m=mk('div','rm','<div class="box" role="dialog" aria-modal="true" aria-label="멜로디는 옆으로"><h3>멜로디는 옆으로 이어가요</h3><p style="font-size:14.5px;color:var(--ink);line-height:1.55;margin:6px 0 14px">이 앱은 화음을 쌓는 앱이 아니라 <b>멜로디를 만드는 앱</b>이에요.<br>한 줄에서 음만 바꿔 보지 말고, <b>옆줄로 넘어가서</b> 다음 음을 골라 주세요 ▶</p><button type="button" class="ok" style="margin:0">알겠어요</button></div>');
   document.body.appendChild(m);
   const close=()=>m.remove();
@@ -1134,7 +1202,7 @@ function endDrag(e,apply){
   const sc0=cells[d.r][d.b*2];
   if(!Object.keys(d.hits).length&&rel===sc0&&sc0.kind==='target'){   // 탱크를 톡 누르면: 지금 불 켜진(잇기 준비) 음에서 이 탱크까지 자동으로 이음
     const k=(sc0.c-2)/2,rows=traceConn().rows;let nb=0;while(nb<NB()&&rows[nb]!==undefined)nb++;
-    if(k>nb){say('','앞 음부터 차례로 골라요',`깜빡이는 ${nb+1}번째 음 탱크 줄에서 먼저 골라 주세요.`);refreshGuide();return;}
+    if(k>nb){say('','앞 음부터 차례로 골라요',`깜빡이는 ${nb+1}번째 음 칸 줄에서 먼저 골라 주세요.`);refreshGuide();return;}
     if(M.free&&k===0)M.rin=R.rin[0]=sc0.r;
     if(applySegment(k,k===0?M.rin:rows[k-1],sc0.r)){row=sc0.r;n=1;}
   }else{
@@ -1146,18 +1214,20 @@ function endDrag(e,apply){
     }
   }
   if(!n){
-    if(rel&&rel.kind==='wall')say('bad','닫힌 탱크예요','빗금 친 탱크로는 음악이 흐를 수 없어요. 깜빡이는 테두리의 열린 탱크를 골라요.');
-    else say('',`다음 음 탱크까지 끌어 주세요`,'손가락을 떼지 말고 오른쪽 탱크 위까지 가져가요.');
+    if(rel&&rel.kind==='wall')say('bad','닫힌 칸이에요','빗금 친 칸으로는 음악이 흘러갈 수 없어요. 깜빡이는 테두리의 열린 칸을 골라요.');
+    else say('',`다음 음 칸까지 끌어 주세요`,'손가락을 떼지 말고 오른쪽 칸 위까지 가져가요.');
   }else if([0,1,2,3].slice(0,NB()).every(k=>R.route[k]!==undefined)){
     say('ok',NB()===1?'온음표가 이어졌어요':'4박이 모두 이어졌어요',`${R.route.map(r=>nameOf(TOP-r)).join(' → ')}`);
   }else{
-    say('',`${nameOf(TOP-row)}까지 이었어요`,'이어서 다음 음 탱크까지 끌어 주세요.');
+    say('',`${nameOf(TOP-row)}까지 이었어요`,'이어서 다음 음 칸까지 끌어 주세요.');
   }
+  if(rel&&rel.c===sc0.c&&rel.r!==d.r&&(rel.kind==='target'||rel.kind==='wall'))setTimeout(sideways,120);   // 같은 세로줄 안에서 위아래로 끌었다면: ‘멜로디는 옆으로’ 안내
   const lk=n?autoLink():0;
   if(n)onPipesChanged(true);else refreshGuide();
-  if(lk)say('ok','앞 음과 자동으로 이었어요',`${R.m===0?'입구':'앞 마디의 마지막 음'}에서 이 음까지 파이프를 이어 놨어요.`);
+  if(lk)say('ok','앞 음과 자동으로 이었어요',`${R.m===0?'입구':'앞 마디의 마지막 음'}에서 이 음까지 이어 놨어요.`);
 }
-board.addEventListener('pointerup',e=>{if(fp)endFree(e);else endDrag(e,true);});
+board.addEventListener('pointerdown',()=>{pend4=false;},true);
+board.addEventListener('pointerup',e=>{if(fp)endFree(e);else endDrag(e,true);if(pend4){pend4=false;setTimeout(warn4,0);}});
 board.addEventListener('pointercancel',e=>{if(fp)endFree(e);else endDrag(e,false);});
 
 /* ---------- 빈 칸·파이프 칸에서 끌기: 지나간 칸을 이어 파이프로 만듦 (끝이 음 탱크면 탱크까지) ---------- */
@@ -1223,11 +1293,11 @@ function endFree(e){
   const f=fp;fp=null;
   try{board.releasePointerCapture(e.pointerId);}catch(_){}
   if(f.path.length<2)return;
-  if(f.end){tone(fOf(f.end.n),0,.35,.1);say('',`${nameOf(f.end.n)}까지 이었어요`,'이어서 다음 음 탱크까지 이어 보세요. 끊어진 곳은 빈 칸에서 끌어 이을 수 있어요.');}
-  else say('','파이프를 이었어요','끝을 음 탱크까지 끌거나, 다른 칸에서 이어서 끌어요.');
+  if(f.end){tone(fOf(f.end.n),0,.35,.1);say('',`${nameOf(f.end.n)}까지 이었어요`,'이어서 다음 음 칸까지 이어 보세요. 끊어진 곳은 빈 칸에서 끌어 이을 수 있어요.');}
+  else say('','음을 이었어요','끝을 음 칸까지 끌거나, 다른 칸에서 이어서 끌어요.');
   const lk=autoLink();
   onPipesChanged(true);
-  if(lk)say('ok','앞 음과 자동으로 이었어요',`${R.m===0?'입구':'앞 마디의 마지막 음'}에서 이 음까지 파이프를 이어 놨어요.`);
+  if(lk)say('ok','앞 음과 자동으로 이었어요',`${R.m===0?'입구':'앞 마디의 마지막 음'}에서 이 음까지 이어 놨어요.`);
 }
 
 /* ---------- 물 흐르기: 입구 → 퍼즐 → 음 → 퍼즐 → 음 … 4박 ---------- */
@@ -1257,7 +1327,7 @@ function armCountdown(ms,quiet){                   // 첫 파이프를 놓으면
   cancelAuto();ensureAC();
   G={phase:'count',t0:performance.now(),countMs:ms||COUNT_MS,passed:0,ticks:0};
   setHud();
-  if(!quiet)say('',`${R.m+1}마디 · 음악 만들기`,'천천히 이어 보세요. 다 이으면 음악이 흘러요.');
+  if(!quiet)say('',`${R.m+1}마디 · 음악 만들기`,'천천히 이어 보세요. 다 이으면 음악이 흘러나와요.');
 }
 function beginWater(now){                          // 이어진 상태면 빠르게, 아니면 느리게 시작
   cancelAuto();ensureAC();now=now||performance.now();
@@ -1265,7 +1335,7 @@ function beginWater(now){                          // 이어진 상태면 빠르
   G.fast=isComplete();
   G.tileMs=G.fast?FAST_MS:ST[state.stage].tile*state.speed;
   setHud();
-  say('',G.fast?'음악이 빠르게 흘러요':'음악이 천천히 흘러요',G.fast?'파이프가 모두 이어져 있어요.':'음악보다 앞서 끊긴 곳을 이어 주세요. 다 이으면 빨라져요.');
+  say('',G.fast?'음악이 빠르게 흘러나와요':'음악이 천천히 흘러나와요',G.fast?'음이 모두 이어져 있어요.':'음악보다 앞서 끊긴 곳을 이어 주세요. 다 이으면 빨라져요.');
   G.backed=false;G.mel=false;
   if(G.fast){                                      // 파이프가 모두 이어진 채로 흐르면: 물이 첫 탱크에 닿는 때에 맞춰 화음·반주가 함께 시작
     const lead=M.free?0:(G.tileMs*(cells[M.rin][0].full?1:.25)+2.5*G.tileMs)/1000;
@@ -1275,7 +1345,7 @@ function beginWater(now){                          // 이어진 상태면 빠르
       for(let b=0;b<NB()&&ok;b++){
         if(rows[b]===undefined)break;
         const n=TOP-rows[b],prev=b===0?entryNote():seq[b-1];
-        if(!judgeNote(R.m,b,n,prev).ok)break;
+        if(!judgeNote(R.m,b,n,prev,seq).ok)break;
         seq.push(n);
         tone(fOf(n,M.fl),lead+ONS(b)*BEAT,Math.max(.2,Math.min(isW()?2.6:1.3,DUR(b)*BEAT*.95)),.1);
       }
@@ -1301,7 +1371,7 @@ function onPipesChanged(quiet){
   if(G.phase!=='count')return;
   if(isComplete()){
     if(!autoT){
-      say('ok','파이프가 모두 이어졌어요','잠깐 뒤 음악이 빠르게 흘러요. 바꾸려면 지금 눌러 보세요.');
+      say('ok','음이 모두 이어졌어요','잠깐 뒤 음악이 빠르게 흘러나와요. 바꾸려면 지금 눌러 보세요.');
       autoT=setTimeout(()=>{autoT=null;if(G.phase==='count'&&isComplete())beginWater();},700);
     }
   }else cancelAuto();
@@ -1387,7 +1457,7 @@ function fail(kind,cell,why){
     say('bad','음들이 제대로 연결되지 않았어요','');
   }else if(kind==='wall'){
     cell.el.classList.add('bad');
-    say('bad','막힌 곳에 부딪혔어요','빗금 친 칸은 닫힌 탱크예요. 열린 탱크로 이어 주세요.');
+    say('bad','막힌 곳에 부딪혔어요','빗금 친 칸은 닫힌 칸이에요. 열린 칸으로 이어 주세요.');
   }else{
     cell.el.classList.add('bad');
     say('bad',`‘${nameOf(cell.n)}’${eun(cell.n)} 쓸 수 없는 음이에요`,`${cell.b+1}박: ${why||''}`);
@@ -1586,7 +1656,7 @@ $('#redo1').addEventListener('click',()=>{        // 이 마디만 처음부터(
   stopPlay();ensureAC();cancelAuto();
   R.done[R.m]=null;R.pipes[R.m]=null;R.routes[R.m]=null;
   startMeasure();
-  say('',`${R.m+1}마디를 다시 시작해요`,'다른 마디는 그대로예요. 음 탱크를 눌러 다시 이어 보세요.');
+  say('',`${R.m+1}마디를 다시 시작해요`,'다른 마디는 그대로예요. 음 칸을 눌러 다시 이어 보세요.');
 });
 let rsT=null;
 $('#restart').addEventListener('click',()=>{
@@ -1605,20 +1675,19 @@ let DL=null;
 /* ---------- 설명 보기: 버튼마다 노란 테두리로 짚어 주는 안내 ---------- */
 const TOUR=[
   {t:['#toChord'],h:'코드 선택',x:'코드 진행 화면으로 돌아가요. 이미 고른 음정은 그대로 남고, 코드를 바꾼 마디만 새로 이어요.'},
-  {t:['#stageSeg [data-s="0"]'],h:'화성음만',x:'마디에 어울리는 음(화성음)만 열려 있어요. 어디에 이어도 정답이라 처음 시작하기 좋아요.'},
-  {t:['#stageSeg [data-s="1"]'],h:'화성음 연습',x:'모든 칸이 열려 있어요. 이 마디에 어울리는 음에만 이어 보세요.'},
-  {t:['#stageSeg [data-s="2"]'],h:'비화성음 연습',x:'어울리는 음 사이를 이어 주는 ‘지나가는 음’을 2·4박(약박)에 한 칸씩 쓸 수 있어요. 1·3박(강박)에는 어울리는 음만 와요.'},
-  {t:['#stageSeg [data-s="3"]'],h:'자유 비화성음',x:'가요처럼 더 다양한 음을 써요. 살짝 낯선 음도 괜찮지만, 마디와 크게 부딪히는 음(빨강)은 안 돼요.'},
+  {t:['#modeBtn'],h:'연습 방식',x:'‘초보’는 화성음만 열려 있어 어디에 이어도 정답이에요. ‘실전’은 모든 음이 열려 있고 화성음을 직접 찾아요. 방식을 바꾸면 지금까지 만든 음정과 설정이 초기화돼요.'},
+  {t:['#nctBtn'],h:'비화성음 (실전)',x:'화성음 사이를 이어 주는 비화성음(‘지나가는음/이웃하는음’)을 2·4박(약박)에 한 칸씩 쓸 수 있어요. 2박과 4박에 쓸 수 있는 횟수를 곡 전체에서 따로 정해요. 4박에 쓰면 다음 마디 첫 음이 그 옆 칸의 화성음이어야 해요.'},
+  {t:['#leapBtn'],h:'도약금지 (실전)',get x(){return `앞 음에서 ${state.leap}도 이상 뛰는 큰 도약을 막아요. 몇 도부터 막을지 정할 수 있어요. 비화성음과 함께 켜서 쓸 수도 있어요.`}},
   {t:['#mchips'],h:'코드 진행',x:'8마디의 코드 진행이에요. 지금 마디는 테두리로 표시되고, 완성한 마디는 초록색이 돼요.'},
-  {t:['#cnotes'],h:'도·미·솔',x:'이번 마디 화음을 이루는 음이에요. 이 음들이 ‘어울리는 음’이에요.'},
+  {t:['#cnotes'],h:'도·미·솔',x:'이번 마디 화음을 이루는 음이에요. 이 음들이 ‘화성음’이에요.'},
   {t:['#rbtn'],h:'리듬',x:'마디마다 음표 4개짜리 리듬을 고를 수 있어요.'},
   {t:['#tbtn'],h:'빠르기',x:'누를 때마다 느리게 · 보통빠르게 · 빠르게로 바뀌어요.'},
-  {t:['#board'],h:'음 만들기 판',x:'음을 눌러 선택하고, 다음 박의 음까지 손가락으로 이어 곡을 만들어보세요. 4박(한 마디)을 모두 이으면 내 음악이 흘러요.'},
+  {t:['#board'],h:'음 만들기 판',x:'음을 눌러 선택하고, 다음 박의 음까지 손가락으로 이어 곡을 만들어보세요. 4박(한 마디)을 모두 이으면 내 음악이 흘러나와요.'},
   {t:['.navrow'],h:'이전마디 · 다음마디',x:'마디를 완성하면 다음 마디로 갈 수 있어요. 마지막 음이 다음 마디의 시작이 돼요.'},
   {t:['#band .ib[data-k]'],h:'🥁 🎸 🎹 반주',x:'드럼 · 베이스 · 건반이에요. 누를 때마다 다른 반주(없음 포함)로 바뀌고, 그 악기 소리만 들려줘요.'},
   {t:['#band .ns'],h:'도 | C',x:'계이름을 한글(도레미)과 영어(CDE)로 바꿔서 보여줘요.'},
   {t:['#redo1','#restart'],h:'다시하기',x:'지금 마디만, 또는 처음부터 다시 만들어요. 마디를 완성하면 이 줄 맨 앞에 ‘들어보기’ 버튼이 생겨서 반주와 함께 내 음악을 들어볼 수 있어요.'},
-  {t:['#hnt'],h:'힌트',x:'켜면 음 탱크에 색이 나타나요. 초록은 어울리는 음, 노랑은 쓸 수 있는 음, 빨강은 쓰면 안 되는 음이에요. 단계마다 보이는 색이 달라요.'},
+  {t:['#hnt'],h:'힌트',x:'켜면 음 칸에 색이 나타나요. 초록은 화성음, 노랑은 쓸 수 있는 비화성음, 빨강은 쓰면 안 되는 음이에요. 단계마다 보이는 색이 달라요.'},
   {t:['#xpt'],h:'음악 다운로드',x:'내 음악을 소리 · 악보 PDF · 악보 이미지로 저장해요. 제목도 정할 수 있고, 만드는 중간에도 저장할 수 있어요.'}];
 function openHelp(steps){steps=steps||TOUR;
   if(document.querySelector('.tour')||document.querySelector('.rm'))return;
@@ -1780,22 +1849,72 @@ function openExport(){
 }
 $('#xpt').addEventListener('click',openExport);
 $('#hnt').addEventListener('click',()=>{state.hint=!state.hint;setHud();});
-$('#stageSeg').addEventListener('click',e=>{
-  const b=e.target.closest('button');if(!b||b.dataset.s===undefined)return;
-  if(LOCK&&+b.dataset.s!==0){say('bad','튜토리얼은 ‘화성음만’으로 연습해요','코드 선택에서 레벨을 ‘장조연습’ 이상으로 바꾸면 다른 단계도 쓸 수 있어요.');return;}
-  state.stage=+b.dataset.s;state.hint=false;
-  stopPlay();saveMeasure();                        // 레벨을 바꿔도 이미 이은 파이프와 완성한 마디는 그대로, 열린 탱크만 다시 정함
-  R.meas=R.meas.map((mm,i)=>{
-    const opens=mkMeasure(mm.rn,i).opens.map((o,bi)=>{
-      const set=new Set(o),dn=R.done[i],rt=R.routes[i]&&R.routes[i][bi];
-      if(dn)set.add(dn[bi]);                         // 이미 고른 음은 계속 열린 탱크
-      if(rt!=null)set.add(TOP-rt);               // 지금 이어 둔 탱크도 유지
-      return [...set];
-    });
-    return {rn:mm.rn,pc:mm.pc,opens,rec:mm.rec,fl:mm.fl,whole:mm.whole};
+/* ---------- 연습 설정: 연습 방식 · 비화성음 · 도약금지 (버튼 + 아래에서 올라오는 시트) ---------- */
+const hasProgress=()=>!!(R&&R.done&&(R.done.some(Boolean)||(R.pipes&&R.pipes.some(Boolean))));
+function confirmBox(title,msg,okLabel,onOk){                 // 초기화 경고 팝업
+  if(document.querySelector('.rm'))return;
+  const m=mk('div','rm',`<div class="box" role="alertdialog" aria-modal="true" aria-label="${title}"><h3>⚠ ${title}</h3><p style="font-size:14.5px;color:var(--ink);line-height:1.55;margin:6px 0 14px">${msg}</p><div class="rr"><button type="button" class="rnd" data-k="no">취소</button><button type="button" class="rnd" data-k="yes" style="background:var(--accent);color:#fff;border-style:solid">${okLabel}</button></div></div>`);
+  document.body.appendChild(m);const close=()=>m.remove();
+  m.addEventListener('click',e=>{if(e.target===m){close();return;}const b=e.target.closest('button[data-k]');if(!b)return;close();if(b.dataset.k==='yes')onOk();});
+}
+const vS=v=>v===null?'∞':v===0?'0':v+'회';
+const vN=v=>v===null?'제한 없음':v===0?'안 씀':v+'회';
+function renderOptBtns(){
+  const mb=$('#modeBtn'),nb=$('#nctBtn'),lb=$('#leapBtn'),easy=state.mode==='easy';
+  mb.className='mb '+(easy?'guide':'real')+(LOCK?' locked':'');
+  mb.innerHTML=`연습 방식 <span class="ar">▸</span><small>${easy?'초보 · 화성음만':'실전 · 모든 음 열림'}${LOCK?' · 고정':''}</small>`;
+  nb.hidden=lb.hidden=easy||LOCK;
+  nb.className='mb'+(state.nctOn?' on':'');
+  nb.innerHTML=`비화성음 <span class="ar">▸</span><small>${state.nctOn?`켜짐 · 2박 ${vS(state.nct2)}<wbr> · 4박 ${vS(state.nct4)}`:'꺼짐'}</small>`;
+  lb.className='mb'+(state.leapOn?' on':'');
+  lb.innerHTML=`도약금지 <span class="ar">▸</span><small>${state.leapOn?`켜짐 · ${state.leap}도 이상`:'꺼짐'}</small>`;
+}
+const closeSheet=()=>document.querySelectorAll('.sheetwrap').forEach(e=>e.remove());
+function openSheet(title,render){
+  closeSheet();stopPlay();
+  const w=mk('div','sheetwrap',`<div class="sheet2" role="dialog" aria-modal="true" aria-label="${title}"></div>`);
+  document.body.appendChild(w);w.addEventListener('click',e=>{if(e.target===w)w.remove();});
+  render(w.firstChild);
+}
+const optChanged=()=>{syncStage();stopPlay();setHud();if(G.phase!=='ready'||cells.length)refreshGuide();};
+function switchMode(to){
+  const go=()=>{state.mode=to;resetOpts();state.hint=false;newRun();setHud();};
+  if(hasProgress())confirmBox('처음부터 다시 시작해요',`연습 방식을 ‘${to==='easy'?'초보':'실전'}’로 바꾸면 지금까지 만든 음정이 모두 사라지고, 설정도 초기화돼요. 바꿀까요?`,'바꾸기',go);else go();
+}
+function modeSheet(){
+  if(LOCK){say('bad','튜토리얼은 ‘초보’ 방식으로 연습해요','코드 선택에서 레벨을 ‘장조연습’ 이상으로 바꾸면 ‘실전’ 방식도 쓸 수 있어요.');return;}
+  openSheet('연습 방식',sh=>{
+    const easy=state.mode==='easy';
+    sh.innerHTML=`<h3>어떻게 연습할까요?</h3><button type="button" class="choice g" data-m="easy" aria-pressed="${easy}"><b>🌱 초보${easy?' ✓':''}</b><span>화성음(어울리는 음)만 열려 있어요. 어디에 이어도 정답이라 처음 시작하기 좋아요.</span></button><button type="button" class="choice r" data-m="real" aria-pressed="${!easy}"><b>🎼 실전${easy?'':' ✓'}</b><span>모든 음이 열려 있어요. 화성음을 직접 찾고, 비화성음·도약금지 같은 규칙도 더할 수 있어요.</span></button><p>⚠ 연습 방식을 바꾸면 지금까지 만든 음정과 설정이 모두 초기화돼요.</p><button type="button" class="close">닫기</button>`;
+    sh.onclick=e=>{if(e.target.closest('.close')){closeSheet();return;}const c=e.target.closest('[data-m]');if(!c||c.dataset.m===state.mode)return;closeSheet();switchMode(c.dataset.m);};
   });
-  startMeasure();
-});
+}
+function stepRow(lab,key,L,lo){const v=state[key],i=L.indexOf(v);return `<div class="stp"><span class="lb">${lab}</span><button type="button" data-k="${key}" data-d="-1"${i<=lo?' disabled':''}>−</button><output>${key==='leap'?v+'도 이상':vN(v)}</output><button type="button" data-k="${key}" data-d="1"${i>=L.length-1?' disabled':''}>+</button></div>`;}
+function nctSheet(){
+  openSheet('비화성음',sh=>{
+    const draw=()=>{const on=state.nctOn;sh.className='sheet2'+(on?'':' off');
+      sh.innerHTML=`<h3>비화성음</h3><button type="button" class="tgl" data-t="1" aria-pressed="${on}"><span class="sw"></span>비화성음 쓰기 (지나가는음/이웃하는음)</button><div class="sdesc"><p>약박(2·4박)에서 앞 음 바로 옆 칸으로 스쳐 가는 비화성음을, 곡 전체에서 몇 번까지 쓸지 박마다 정해요.</p>${stepRow('2박에서','nct2',NCTV,0)}${stepRow('4박에서','nct4',NCTV,0)}<p>4박에 쓰면 다음 마디 첫 음이 그 음 바로 옆 칸의 화성음이어야 해요. ‘안 씀’이면 그 박에는 화성음만 와요.</p></div><button type="button" class="close">닫기</button>`;};
+    draw();
+    sh.onclick=e=>{if(e.target.closest('.close')){closeSheet();return;}
+      if(e.target.closest('.tgl')){state.nctOn=!state.nctOn;optChanged();draw();return;}
+      const b=e.target.closest('button[data-k]');if(!b||b.disabled)return;
+      const i=NCTV.indexOf(state[b.dataset.k]);state[b.dataset.k]=NCTV[Math.max(0,Math.min(NCTV.length-1,i+ +b.dataset.d))];optChanged();draw();};
+  });
+}
+function leapSheet(){
+  openSheet('도약금지',sh=>{
+    const draw=()=>{const on=state.leapOn,lo=LEAPV.indexOf(leapMin());sh.className='sheet2'+(on?'':' off');
+      sh.innerHTML=`<h3>도약금지</h3><button type="button" class="tgl" data-t="1" aria-pressed="${on}"><span class="sw"></span>큰 도약 막기</button><div class="sdesc"><p>앞 음에서 몇 도 이상 뛰는 것을 막을지 정해요. 예) 4도 이상 금지 → 3도까지는 괜찮아요.</p>${stepRow('금지 크기','leap',LEAPV,lo)}<p>${state.nctOn?'비화성음이 켜져 있어서 3도부터 막을 수 있어요.':'비화성음이 꺼져 있으면 화성음끼리가 3도 간격이라 4도부터 막을 수 있어요.'}</p></div><button type="button" class="close">닫기</button>`;};
+    draw();
+    sh.onclick=e=>{if(e.target.closest('.close')){closeSheet();return;}
+      if(e.target.closest('.tgl')){state.leapOn=!state.leapOn;optChanged();draw();return;}
+      const b=e.target.closest('button[data-k]');if(!b||b.disabled)return;
+      const i=LEAPV.indexOf(state.leap);state.leap=LEAPV[Math.max(LEAPV.indexOf(leapMin()),Math.min(LEAPV.length-1,i+ +b.dataset.d))];optChanged();draw();};
+  });
+}
+$('#modeBtn').addEventListener('click',modeSheet);
+$('#nctBtn').addEventListener('click',nctSheet);
+$('#leapBtn').addEventListener('click',leapSheet);
 
 /* ---------- 1단계: 코드 고르기 (8칸 + 카드, 레벨 4단계) ---------- */
 /* 레벨 1·2 = 장조 6코드 · 레벨 3 = C단조 6코드 · 레벨 4 = 장조 6 + 단조 5 + 응용(7th) 6 = 17장
@@ -2097,6 +2216,7 @@ function renderChord(){
   if(clv<=2&&cfb&&cfb.look)sb+=' 이번 마디만 보지 말고, 그다음 마디까지 이어 갈 수 있는지도 미리 계산해 봐요.';
   say.innerHTML=`${clv>=3?'<button type="button" class="helpbtn" id="cHelp" aria-haspopup="dialog">? 규칙 보기</button>':''}<small>${done?(bads.length?'코드 선택 · 확인해요':'코드 선택 끝'):editing?'한 마디만 고치는 중':'지금 고르는 곳'}</small><b>${t}</b><span class="cn">${sb}</span>${cfb?`<span class="fb ${cfb.k}">${cfb.t}</span>`:''}`;
   say.classList.toggle('warn',(!!cfb&&cfb.k==='hint')||(bads.length>0&&!editing));say.classList.toggle('good',!!cfb&&cfb.k==='good');
+  setTimeout(tutSync,0);
   $('#cTrayH').textContent=`레벨 ${clv+1} · ${LVD[clv]}`;
   const tray=$('#cTray');tray.hidden=done;
   if(!done){
@@ -2127,7 +2247,7 @@ function renderAid(){
   const box=$('#cAid'),done=cDone()&&cedit===null,cur=cedit!==null?cp[cedit-1]:cp[cp.length-1];
   box.hidden=done;if(done)return;
   if(clv<=2){
-    box.innerHTML='<div class="aidh"><h3>화음 규칙</h3>'+HB+'</div>'+ruleList(cur);
+    box.innerHTML='<div class="aidh"><h3>화음 규칙</h3><span style="display:flex;gap:6px">'+(clv===0?'<button type="button" class="helpbtn" id="cTutBtn">▶ 가이드</button>':'')+HB+'</span></div>'+ruleList(cur);
   }else{
     const from=cmapFrom||cur||null;
     if(cmapFull)box.innerHTML=`<div class="aidh"><h3>규칙 지도</h3>${HB}</div><p class="sub2">코드를 눌러 보면 갈 수 있는 곳이 나와요</p><div class="cmapbox">${chordMap(from,null,true,from===cur?'지금 여기':'여기서 출발',from?null:startOf(3))}${GLEG}<div class="cmore"><button type="button" class="sm more">간단히 ▴</button></div><p>${roleTxt(from)}</p></div>`;
@@ -2219,18 +2339,201 @@ function applyProg(prog){                                      // 바뀐 마디�
   if(R.done.some(Boolean))say('',`${ch.map(i=>i+1).join('·')}마디 코드가 바뀌었어요`,'바뀐 마디만 새로 이어요. 다른 마디는 그대로예요.');
 }
 function cGo(){
-  if(!cOK())return;
+  if(!cOK())return;lsSet('sd_lv',clv);
   const prog=cp.slice();
-  {const w=clv<=2,lock=clv===0;if(w!==W8||(lock&&state.stage!==0)){W8=w;if(lock)state.stage=0;PROG=null;}   // 튜토리얼·장조·단조연습은 8마디 온음표, 튜토리얼은 ‘화성음만’으로 고정(바뀌면 음정은 새로 시작)
+  {const w=clv<=2,lock=clv===0;if(w!==W8||(lock&&state.mode!=='easy')){W8=w;if(lock){state.mode='easy';resetOpts();}PROG=null;}   // 튜토리얼·장조·단조연습은 8마디 온음표, 튜토리얼은 ‘초보(화성음만)’로 고정(바뀌면 음정은 새로 시작)
    LOCK=lock;}
   applyProg(prog);
   showView(2);
 }
-$('#cRule').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;clv=+b.dataset.s;cfb=null;cmapFrom=null;cedit=null;
-  {const hi=cp.findIndex(x=>!x);if(hi>=0)cp=cp.slice(0,hi);}
-  if(clv<=2){if(cp[0]!==homeOf())cp=[];}
-  else if(cp.length===1||!startOf(3).includes(cp[0]))cp=[];
-  renderChord();});
+const LVN=['튜토리얼','장조연습','단조연습','자유작곡'];
+const lsGet=k=>{try{return localStorage.getItem(k);}catch(e){return null;}},lsSet=(k,v)=>{try{localStorage.setItem(k,v);}catch(e){}};
+function setLevel(to){tutStop();tpStop();TP.skipped=false;TP.finished=false;TUT.optout=false;TUT.skipped=false;TUT.finished=false;clv=to;cfb=null;cmapFrom=null;cedit=null;cp=[];state.rh.fill(0);state.mode=to===0?'easy':'real';resetOpts();state.hint=false;PROG=null;R=null;lsSet('sd_lv',to);renderChord();}
+$('#cRule').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const to=+b.dataset.s;if(to===clv)return;
+  const go=()=>setLevel(to);   // 레벨을 바꾸면 고른 코드·음정·설정을 모두 초기화
+  if(cp.length>0||hasProgress())confirmBox('처음부터 다시 시작해요',`레벨을 ‘${LVN[to]}’${to===0?'로':'으로'} 바꾸면 지금까지 고른 코드와 음정이 모두 사라지고 설정도 초기화돼요. 바꿀까요?`,'바꾸기',go);else go();});
+
+/* ---------- 튜토리얼 가이드 (코드 선택 · 레벨 ‘튜토리얼’) ---------- */
+const TUT={on:false,skipped:false,finished:false,optout:false,ph:'intro',fb:null,last:null,len:0,seenWrong:false,spotKey:''};
+const TP={on:false,skipped:false,finished:false,step:0,rhy:0,wrong:0,fb:null,spotKey:'',v:null,html:''};   // 음정 선택 튜토리얼
+const CIRC=['①','②','③','④','⑤','⑥','⑦','⑧'],RIDX=['I','ii','iii','IV','V','vi'];
+const tutEls=sel=>(Array.isArray(sel)?sel:[sel]).flatMap(q=>[...document.querySelectorAll(q)]);
+function tutEnsure(){
+  if(!$('#tdim')){document.body.insertAdjacentHTML('beforeend','<div class="tdim" id="tdim"></div><div class="tring" id="tring"></div><div class="tcoach" id="tcoach" role="dialog" aria-live="polite" aria-label="튜토리얼 안내"></div>');
+    $('#tcoach').addEventListener('click',tutBtn);}
+}
+let tl=false;const tutKick=()=>{if(!tl){tl=true;requestAnimationFrame(tutLoop);}};
+function tutStart(){tutEnsure();TUT.on=true;TUT.ph='intro';TUT.fb=null;TUT.last=null;TUT.len=cp.length;TUT.seenWrong=false;TUT.nudge=false;TUT.spotKey='';tutRender();tutKick();}
+function tutStop(){TUT.on=false;if(!TP.on)['tdim','tring','tcoach'].forEach(i=>{const e=$('#'+i);if(e)e.remove();});}
+function tutSync(){
+  if(!document.body.classList.contains('s1')||clv!==0){if(TUT.on)tutStop();return;}
+  if(!TUT.on){if(cp.length===0&&!TUT.skipped&&!TUT.finished)tutStart();return;}
+  if(cp.length>TUT.len){
+    TUT.last=cp[cp.length-1];TUT.fb=null;
+    if(TUT.ph==='first')TUT.ph='pick';
+    else if(TUT.ph==='pick'||TUT.ph==='wrong'){if(TUT.ph==='wrong')TUT.seenWrong=true;TUT.ph=cDone()?'done':(cp.length===2&&!TUT.seenWrong?'wrong':'pick');}
+  }
+  TUT.len=cp.length;tutRender();
+}
+function tutRuleNo(cur,n){return n===4||n===7?6:Math.max(0,RIDX.indexOf(cur));}
+function tutWhy(rn){                                      // 불이 꺼진 코드를 눌렀을 때의 이유
+  const cur=cp[cp.length-1],n=cp.length+1,valid=curValid();
+  if(n===5)return {t:'5마디는 집 I로 돌아와요',b:`규칙 ⑦: 1·5·8마디는 I예요. ‘${rn}’ 말고 불이 켜진 <b>I</b>를 골라 주세요.`};
+  if(n===8)return {t:'마지막 8마디는 I로 끝나요',b:`규칙 ⑦: 곡은 집 I로 돌아와야 끝난 느낌이 나요. ${cur} 다음에 I로 갈 수 있어야 해요. 불이 켜진 <b>${valid.join(', ')}</b>를 골라 주세요.`};
+  const all=T2[cur]||[],cut=all.length>valid.length&&all.some(x=>!valid.includes(x));
+  return {t:`앗, ${cur} 다음에 ${rn}는 못 가요`,b:`규칙 ${CIRC[tutRuleNo(cur,n)]}: <b>${cur} → ${all.join(', ')}</b>만 올 수 있어요. ${all.includes(rn)?`‘${rn}’도 규칙에는 맞지만, 그 길로 가면 8마디까지 이어질 수 없어서 튜토리얼에서는 불을 꺼 뒀어요.`:`위 규칙 목록에서 ${cur}로 시작하는 줄을 보세요.`}${cut&&!all.includes(rn)?` 그중에서도 끝까지 이어지는 <b>${valid.join(', ')}</b>만 불이 켜져요.`:''}`};
+}
+function tutView(){                                         // {spot,pulse,title,cls,body,btns}
+  const n=cp.length,P=TUT.ph,I=`#cCards [data-r="I"]`;
+  const praise=TUT.last?`<span class="th ok">맞아요! 👏 ${TUT.last} 코드 ✓</span>`:'';
+  if(TUT.nudge&&(P==='slots'||P==='cards'))return {spot:[P==='slots'?'#cSlots':'#cCards'],title:'아직 설명 중이에요',cls:'no',body:'이 단계는 눌러 보는 곳이 아니라 <b>설명</b>이에요. 아래 <b>다음 ▸</b> 버튼을 눌러 주세요. 카드는 곧 직접 고르게 해 드려요.',btns:[{k:'nudge',t:'알겠어요',pri:1}]};
+  if(TUT.fb)return {spot:['#cCards'],pulse:true,title:TUT.fb.t,cls:'no',body:TUT.fb.b,btns:[{k:'fb',t:TUT.ph==='wrong'?'알겠어요, 이어 갈게요':'다시 골라 볼게요',pri:1}]};
+  if(P==='intro')return {spot:null,title:'🎼 먼저 코드 진행을 만들어요',body:'곡은 <b>8마디</b>예요. 마디마다 깔리는 반주 화음을 <b>코드</b>라고 해요. 코드 8개를 순서대로 고르면 곡의 뼈대가 돼요. 저와 하나씩 해 봐요!',btns:[{k:'skip',t:'건너뛰기',gh:1},{k:'next',t:'다음 ▸',pri:1}]};
+  if(P==='slots')return {spot:['#cSlots'],title:'8칸이 8마디예요',body:'1마디부터 8마디까지 이 칸에 코드를 차례로 채워요. 깜빡이는 칸이 지금 고를 마디예요.',btns:[{k:'prev',t:'◂ 이전'},{k:'next',t:'다음 ▸',pri:1}]};
+  if(P==='cards')return {spot:['#cCards'],title:'코드 카드',body:'쓸 수 있는 코드예요. 카드에 적힌 <b>도·미·솔</b>은 그 코드를 이루는 음이에요. 튜토리얼에서는 <b>지금 고를 수 있는 카드만 불이 켜져요.</b>',btns:[{k:'prev',t:'◂ 이전'},{k:'next',t:'다음 ▸',pri:1}]};
+  if(P==='first')return {spot:[I],pulse:true,big:1,title:'👆 깜빡이는 I 카드를 눌러요',body:'1마디는 곡의 ‘집’ 코드 <b>I</b>(도·미·솔)로 시작해요 <span class="rl">(규칙 ⑦)</span>.',btns:[{k:'prev',t:'◂ 이전'},{k:'skip',t:'건너뛰기',gh:1}]};
+  if(P==='wrong')return {spot:['#cCards'],pulse:true,big:1,praise,title:'👆 불이 꺼진 카드를 눌러 보세요',body:'일부러 틀려 보기예요. 안 되는 이유를 알려 드려요.',btns:[{k:'skipwrong',t:'건너뛰고 고르기'}]};
+  if(P==='done')return {spot:['#cSlots'],cls:'fin',title:'🎉 1단계 완성! 곡의 뼈대가 만들어졌어요',body:`<b class="prog">${cp.join(' – ')}</b><span class="recap">이제 코드 진행을 어떻게 하는지 알겠죠? 👍</span>다음은 <b>2단계</b>예요. 이 코드 위에 <b>멜로디</b>를 얹어요!`,btns:[{k:'stay',t:'조금 더 둘러볼게요',gh:1},{k:'go',t:'2단계 멜로디 만들기 ▸',pri:1}]};
+  // pick
+  const cur=cp[n-1],valid=curValid();let ins;
+  if(n===4||n===7){}
+  if(n===1)return {spot:['#cCards'],pulse:true,big:1,praise,title:'👆 2마디 코드를 눌러요',body:'깜빡이는 카드 중에 <b>아무거나</b> 괜찮아요. <span class="rl">(규칙 ①: I 다음에는 어떤 코드든 올 수 있어요)</span>',btns:[{k:'skip',t:'건너뛰기',gh:1}]};
+  if(n===4)ins=`5마디는 다시 집 <b>I</b>로 돌아와요 <span class="rl">(규칙 ⑦)</span>`;
+  else if(n===7)ins=`마지막 8마디는 <b>I</b>로 끝나요 <span class="rl">(규칙 ⑦)</span>. 깜빡이는 카드 중에서 골라요.`;
+  else if(n===6)ins=`깜빡이는 카드 중에서 골라요. 다음 마지막 마디가 I로 끝나야 해서 일부 카드는 꺼져 있어요.`;
+  else ins=`깜빡이는 카드 중에서 하나 골라요. <span class="rl">(규칙 ${CIRC[tutRuleNo(cur,n)]}: ${cur} → ${(T2[cur]||[]).join(', ')})</span>`;
+  return {spot:['#cCards'],pulse:true,praise,big:1,title:`👆 ${n+1}마디 코드를 눌러요`,body:ins,btns:[{k:'skip',t:'건너뛰기',gh:1}]};
+}
+function tutRender(){
+  if(!TUT.on)return;
+  const v=tutView(),P=TUT.ph,pct=P==='intro'?2:P==='slots'?4:P==='cards'?6:Math.round(8+42*cp.length/8);   // 코드 단계는 전체 진행 바의 앞 절반(음정 단계가 뒤 절반)
+  $('#tcoach').innerHTML=`<div class="tp"><span>튜토리얼</span><span class="bar"><i style="width:${pct}%"></i></span><span>코드 ${cp.length}/8</span></div>${v.praise||''}<b class="th${v.cls?' '+v.cls:''}${v.big?' big':''}">${v.title}</b><p${v.big?' class="sub"':''}>${v.body}</p><div class="tb">${v.btns.map(b=>`<button type="button" data-k="${b.k}" class="${b.pri?'pri':b.gh?'gh':''}">${b.t}</button>`).join('')}</div>`;
+  TUT.v=v;
+  const key=P+'|'+(v.spot?v.spot.join(','):'')+cp.length;
+  if(key!==TUT.spotKey){TUT.spotKey=key;const el=v.spot&&tutEls(v.spot)[0];if(el){const t=el.getBoundingClientRect().top+scrollY-70;window.scrollTo({top:Math.max(0,t),behavior:'smooth'});}}
+}
+function tutLoop(){
+  if(!TUT.on&&!TP.on){tl=false;return;}
+  const dim=$('#tdim'),ring=$('#tring'),v=TP.on?TP.v:TUT.v;
+  if(dim&&ring&&v){
+    dim.style.display=v.lite?'none':'';
+    const els=v.spot?tutEls(v.spot):[];
+    if(!els.length){dim.style.clipPath='none';ring.style.display='none';}
+    else{let x1=1e9,y1=1e9,x2=-1e9,y2=-1e9;els.forEach(e=>{const r=e.getBoundingClientRect();x1=Math.min(x1,r.left);y1=Math.min(y1,r.top);x2=Math.max(x2,r.right);y2=Math.max(y2,r.bottom);});
+      x1-=5;y1-=5;x2+=5;y2+=5;
+      dim.style.clipPath=`polygon(evenodd,0 0,100% 0,100% 100%,0 100%,0 0,${x1}px ${y1}px,${x1}px ${y2}px,${x2}px ${y2}px,${x2}px ${y1}px,${x1}px ${y1}px)`;
+      Object.assign(ring.style,{display:'block',left:x1+'px',top:y1+'px',width:(x2-x1)+'px',height:(y2-y1)+'px'});ring.classList.toggle('pulse',!!v.pulse);}
+  }
+  requestAnimationFrame(tutLoop);
+}
+function tutBtn(e){
+  if(TP.on)return tpBtn(e);
+  const b=e.target.closest('button[data-k]');if(!b)return;const k=b.dataset.k,seq=['intro','slots','cards','first'];TUT.nudge=false;
+  if(k==='skip'||k==='stay'){const empty=!cp.length;TUT.skipped=true;TUT.finished=true;if(k==='skip')TUT.optout=true;tutStop();if(k==='skip'&&empty)setLevel(1);return;}   // 고른 코드가 없을 때 건너뛰면 장조연습으로
+  if(k==='go'){TUT.finished=true;tutStop();cGo();return;}
+  if(k==='next'){TUT.ph=seq[Math.min(3,seq.indexOf(TUT.ph)+1)];}
+  else if(k==='prev'){TUT.ph=seq[Math.max(0,seq.indexOf(TUT.ph)-1)];}
+  else if(k==='fb'){TUT.fb=null;if(TUT.ph==='wrong'){TUT.ph='pick';TUT.seenWrong=true;}}
+  else if(k==='skipwrong'){TUT.ph='pick';TUT.seenWrong=true;}
+  tutRender();
+}
+document.addEventListener('click',e=>{                    // 불이 꺼진 카드를 눌렀을 때: 기본 안내 대신 튜토리얼이 이유를 설명
+  if(!TUT.on)return;
+  if((TUT.ph==='slots'||TUT.ph==='cards')&&e.target.closest('#cCards,#cSlots')){e.stopPropagation();e.preventDefault();TUT.nudge=true;tutRender();return;}   // 설명 단계에서 카드·칸을 누르면 진행되지 않고 ‘다음’을 안내const c=e.target.closest('#cCards .ccard');if(!c)return;
+  const c=e.target.closest('#cCards .ccard');if(!c)return;
+  if(!['pick','wrong'].includes(TUT.ph)||curValid().includes(c.dataset.r))return;
+  e.stopPropagation();e.preventDefault();TUT.fb=tutWhy(c.dataset.r);if(TUT.ph==='wrong')TUT.fb.t='🔍 '+TUT.fb.t;tutRender();
+},true);
+document.addEventListener('click',e=>{
+  if(!e.target.closest('#cTutBtn'))return;
+  const go=()=>{cp=[];cfb=null;cedit=null;TUT.skipped=false;TUT.finished=false;TUT.optout=false;TP.skipped=false;TP.finished=false;renderChord();};
+  if(cp.length)confirmBox('가이드를 처음부터 볼까요?','가이드는 빈 칸에서 시작해요. 지금까지 고른 코드가 모두 지워져요.','처음부터 보기',go);else go();
+});
+
+/* ---------- 튜토리얼 가이드 (음정 선택 · 레벨 ‘튜토리얼’) ---------- */
+const tpFull=m=>m===0||m===1||m===NM-1;                       // 1·2·8마디는 하나하나 안내, 3~7마디는 짧은 한 줄 힌트
+const tpNb=()=>{let n=0;while(n<NB()&&R.route[n]!==undefined)n++;return n;};
+function tpStart(){tutEnsure();TP.on=true;TP.step=0;TP.rhy=0;TP.wrong=0;TP.fb=null;TP.spotKey='';TP.html='';document.body.classList.add('tplock');tpRender();tutKick();}
+function tpStop(){const was=TP.on;TP.on=false;TP.v=null;document.body.classList.remove('tplock','tplite');if(was&&!TUT.on)['tdim','tring','tcoach'].forEach(i=>{const e=$('#'+i);if(e)e.remove();});}
+function tpSync(){
+  const inP=!document.body.classList.contains('s1');
+  if(!inP||clv!==0||!R||!M){if(TP.on)tpStop();return;}
+  if(!TP.on){if(!TP.skipped&&!TP.finished&&!TUT.optout&&!hasProgress())tpStart();return;}
+  tpRender();
+}
+function tpView(){
+  const m=R.m,nb=tpNb(),done=!!R.done[m],full=tpFull(m),notes=M.pc.map(n=>sn(n,M.fl)).join('·'),last=m===NM-1,B='#board';
+  const fail=G.phase==='done'&&G.result==='fail';
+  const sk={k:'skip',t:'건너뛰기',gh:1};
+  if(TP.fb)return {spot:[B],pulse:true,walls:0,title:TP.fb.t,cls:'no',body:TP.fb.b,btns:[{k:'fb',t:TP.wrong?'다시 골라 볼게요':'알겠어요, 이어 갈게요',pri:1}]};
+  if(fail)return {lite:1,spot:['#mvar'],title:'앗, 음악이 멈췄어요',cls:'no',body:'음이 끊겼거나 닫힌 칸으로 갔어요. 안내 줄의 <b>다시하기</b>를 누르거나, 깜빡이는 칸부터 다시 이어 보세요.',btns:[sk]};
+  if(done){
+    if(last)return {lite:1,spot:['#play','#xpt'],pulse:true,title:'🎉 8마디 완성! 곡이 만들어졌어요',body:'코드 위에 멜로디까지 얹었어요. <b>처음부터 들어보기</b>로 내 곡을 들어 보고, <b>음악 다운로드</b>로 저장할 수도 있어요. 장조연습으로 가면 지금 곡은 지워져요.',btns:[{k:'hearall',t:'▶ 전체 듣기'},{k:'finish',t:'장조연습으로 ▸',pri:1},{k:'stay',t:'더 둘러볼게요',gh:1}]};
+    if(!full)return {lite:1,spot:['#next'],pulse:true,title:`${m+1}마디 완성! 👏`,body:'아래 <b>다음마디 ▶</b>를 눌러요.',btns:[sk]};
+    return {spot:['#next'],pulse:true,title:`${m+1}마디 완성! 👏`,body:`${praiseFor(m,R.done[m])}<br>마지막 음이 <b>다음 마디의 입구</b>가 돼요. <b>다음마디 ▶</b>를 눌러요.`,btns:[{k:'hear',t:'🔊 이 마디 들어보기'},sk]};
+  }
+  if(nb>=NB())return {spot:[B],title:last?'온음표가 이어졌어요':'4박이 모두 이어졌어요',body:'잠시 뒤 음악이 흘러가며 내가 고른 멜로디가 들려요. 🎵',btns:[sk]};
+  if(!full)return {lite:1,spot:null,title:nb?`${m+1}마디 · ${nb+1}박`:`${m+1}마디 · ${M.rn} 화음`,body:nb?'깜빡이는 칸 중에서 이어 갈 음을 골라요.':`화성음 <b>${notes}</b> 중에서 ${NB()}개 음을 이어요. 앞 마디 끝음에서 시작해요.`,btns:[sk]};
+  if(m===0&&nb===0&&TP.step<3){
+    if(TP.step===0)return {spot:null,title:'🎶 이제 멜로디를 만들어요',body:'코드 8개가 정해졌어요. 이제 마디마다 <b>음</b>을 골라 <b>멜로디</b>를 만들어요. <b>4박</b>(음 4개)을 이어 마디를 완성하면 소리가 나요.',btns:[sk,{k:'next',t:'다음 ▸',pri:1}]};
+    if(TP.step===1)return {spot:['#mchips','.mfix'],solid:1,title:'1~8마디, 마디마다 코드가 있어요',body:'위 칩이 방금 고른 코드예요. 지금은 <b>1마디 · I</b>예요. 마디를 다 이으면 다음 마디가 열려요.',btns:[{k:'prev',t:'◂ 이전'},{k:'next',t:'다음 ▸',pri:1}]};
+    return {spot:['.mfix'],solid:1,title:'화성음이 뭘까요?',body:`이 마디의 코드 ${M.rn}는 <b>${notes}</b> 세 음으로 이뤄져요. 이렇게 코드를 이루는 음이 <b>화성음</b>이에요. 초보 방식에서는 <b>화성음 칸만 열려</b> 있어서 어느 음을 골라도 어울려요.`,btns:[{k:'prev',t:'◂ 이전'},{k:'next',t:'다음 ▸',pri:1}]};
+  }
+  if(m===1&&nb===0&&!TP.rhy)return {spot:['#rbtn'],solid:1,pulse:true,title:'리듬도 바꿀 수 있어요',body:'<b>리듬</b> 버튼으로 마디의 박자 모양(또박또박, 통통…)을 고를 수 있어요. 지금은 그대로 두고 갈게요.',btns:[sk,{k:'next',t:'다음 ▸',pri:1}]};
+  if(last){
+    if(nb===0)return {spot:[B],pulse:true,walls:1,title:'마지막 8마디: 온음표 하나',body:`곡을 마무리하는 마디예요. 으뜸음 <b>${sn(M.pc[0],M.fl)}</b>를 <b>높게</b> 할지 <b>낮게</b> 할지만 골라요. 앞 마디가 끝난 음(‘${nameOf(TOP-M.rin)}’)에서 이어지고, 이 음이 곡이 끝난 느낌(종지)을 줘요.`,btns:[sk]};
+  }
+  if(m===0){
+    if(nb===0)return {spot:[B],pulse:true,walls:1,title:'1박: 첫 음을 골라요',body:`깜빡이는 칸이 이 마디에서 쓸 수 있는 음(<b>${notes}</b>)이에요. 마음에 드는 음을 <b>톡 눌러</b> 보세요.`,btns:[sk]};
+    if(nb===1)return {spot:[B],pulse:true,walls:1,title:'음을 이어요',body:`이제 <b>2박 음</b>이에요. 이어진 음에서 오른쪽 칸까지 <b>손가락을 끌거나</b>, 칸을 <b>톡 눌러도</b> 음끼리 이어져요.`,btns:[sk]};
+    if(nb===2&&!TP.wrong)return {spot:[B],pulse:true,walls:1,title:'일부러 틀려 보기',body:'이번엔 <b>빗금 친 닫힌 칸</b>을 눌러 보세요. 왜 안 되는지 알려 드려요.',btns:[{k:'skipwrong',t:'건너뛰고 이어가기'}]};
+    return {spot:[B],pulse:true,walls:1,title:`${nb+1}박을 이어요`,body:nb===3?'마지막 4박이에요. 이 음까지 이으면 음악이 흘러나와요!':'계속 이어요. 앞 음에서 가까운 음으로 가면 노래하기 편해요.',btns:[sk]};
+  }
+  // 2마디
+  if(nb===0)return {spot:[B],pulse:true,walls:1,title:`2마디 · ${M.rn} 화음`,body:`왼쪽 <b>입구</b>는 앞 마디가 끝난 자리예요(마지막 음: ‘${nameOf(TOP-M.rin)}’). 여기서 이어서 <b>${notes}</b> 중 첫 음을 골라요.`,btns:[sk]};
+  return {spot:[B],pulse:true,walls:1,title:`${nb+1}박을 이어요`,body:'1마디와 같은 방법이에요. 깜빡이는 칸 중에서 골라 이어요.',btns:[sk]};
+}
+function tpRender(){
+  if(!TP.on)return;
+  const v=tpView();TP.v=v;
+  const nd=R.done.filter(Boolean).length,part=(R.done[R.m]||!M)?0:tpNb()/NB(),pct=Math.round(50+50*(nd+part)/NM);
+  const html=`<div class="tp"><span>튜토리얼</span><span class="bar"><i style="width:${pct}%"></i></span><span>코드 ✓ · 음정 ${nd}/${NM}</span></div><b class="th${v.cls?' '+v.cls:''}">${v.title}</b><p>${v.body}</p><div class="tb">${v.btns.map(b=>`<button type="button" data-k="${b.k}" class="${b.pri?'pri':b.gh?'gh':''}">${b.t}</button>`).join('')}</div>`;
+  const co=$('#tcoach');co.classList.toggle('lite',!!v.lite);document.body.classList.toggle('tplite',!!v.lite);
+  if(html!==TP.html){TP.html=html;co.innerHTML=html;}
+  const key=R.m+'|'+tpNb()+'|'+(v.spot?v.spot.join(','):'')+'|'+v.title;
+  if(key!==TP.spotKey){TP.spotKey=key;const el=v.spot&&tutEls(v.spot)[0];if(el&&!v.lite){const t=el.getBoundingClientRect().top+scrollY-70;window.scrollTo({top:Math.max(0,t),behavior:'smooth'});}}
+}
+function tpBtn(e){
+  const b=e.target.closest('button[data-k]');if(!b)return;const k=b.dataset.k;
+  if(k==='skip'||k==='stay'){TP.skipped=true;TP.finished=true;tpStop();return;}
+  if(k==='finish'){TP.finished=true;tpStop();setLevel(1);showView(1);return;}   // 가이드를 마치면 장조연습으로
+  if(k==='hear'){$('#playOne').click();return;}
+  if(k==='hearall'){$('#play').click();return;}
+  if(k==='next'){if(R.m===1&&TP.rhy===0&&TP.step>=3)TP.rhy=1;else TP.step=Math.min(3,TP.step+1);}
+  else if(k==='prev')TP.step=Math.max(0,TP.step-1);
+  else if(k==='fb'){TP.fb=null;TP.wrong=1;}
+  else if(k==='skipwrong')TP.wrong=1;
+  tpRender();
+}
+document.addEventListener('pointerdown',e=>{                // 닫힌(빗금) 탱크를 누르면: 이유를 튜토리얼이 설명
+  if(!TP.on||!TP.v||!TP.v.walls||TP.fb)return;
+  const t=e.target.closest&&e.target.closest('#board .tank.wall');if(!t)return;
+  const c=cells[+t.dataset.r][+t.dataset.c];if(!c||c.n===undefined)return;
+  e.stopPropagation();e.preventDefault();
+  const nn=nameOf(c.n),notes=M.pc.map(n=>sn(n,M.fl)).join('·');
+  TP.fb=M.opens[0].length&&isW()?{t:'온음표는 으뜸음만 열려요',b:`마지막 마디는 으뜸음 <b>${sn(M.pc[0],M.fl)}</b>(높게·낮게)만 고를 수 있어요. 깜빡이는 칸을 눌러요.`}
+    :{t:`‘${nn}’는 닫혀 있어요`,b:`${M.rn} 화음은 <b>${notes}</b>로 이뤄져요. ‘${nn}’는 화성음이 아니라서 <b>빗금(닫힘)</b>이에요. 초보 방식은 화성음만 열려요. 나중에 <b>실전 방식</b>에서는 지나가는음·이웃하는음 같은 비화성음도 쓸 수 있어요.`};
+  tpRender();
+},true);
+document.addEventListener('click',e=>{                      // 안내만 하는 단계(리듬 등): 눌러도 반응하지 않게
+  if(!TP.on||!TP.v||!TP.v.solid||!TP.v.spot)return;
+  if(tutEls(TP.v.spot).some(x=>x.contains(e.target))){e.stopPropagation();e.preventDefault();}
+},true);
+document.addEventListener('click',e=>{
+  if(!e.target.closest('#pTutBtn'))return;
+  const go=()=>{TP.skipped=false;TP.finished=false;TUT.optout=false;state.rh.fill(0);newRun();setHud();};
+  if(hasProgress())confirmBox('가이드를 처음부터 볼까요?','가이드는 빈 마디에서 시작해요. 지금까지 만든 음정이 모두 지워져요.','처음부터 보기',go);else go();
+});
 $('#cCards').addEventListener('click',e=>{const b=e.target.closest('.ccard');if(b)cPick(b.dataset.r);});
 $('#cSlots').addEventListener('click',e=>{
   const b=e.target.closest('.cslot.fill,.cslot.act[data-i],.cslot.hole');if(!b)return;
@@ -2252,7 +2555,17 @@ document.addEventListener('click',e=>{
 PROG=PRESETS[0].slice();
 renderFlow(2);
 newRun();
+const SEEN=lsGet('sd_seen')==='1';
+if(SEEN){const lv=lsGet('sd_lv'),n=lv===null?1:+lv;if(n>=1&&n<=3){clv=n;state.mode='real';resetOpts();}TUT.finished=true;}   // 다시 온 학생은 마지막 레벨(없으면 장조연습)로, 환영 카드 없이 시작
+else TUT.skipped=true;                                                                                             // 처음 온 학생은 환영 카드에서 고른 뒤 시작
 showView(1);
+function showWelcome(){
+  const m=mk('div','rm',`<div class="box" role="dialog" aria-modal="true" aria-label="환영해요"><h3>🎼 나도 작곡가</h3><p style="font-size:14.5px;color:var(--ink);line-height:1.6;margin:6px 0 14px">8마디짜리 곡을 만들어요.<br><b>① 코드</b>(반주 화음)를 고르고 → <b>② 음정</b>(멜로디)을 골라요.<br>어디서 시작할까요?</p><button type="button" class="ok" data-k="t" style="margin:0 0 8px">🌱 처음이에요 — 가이드와 함께 시작</button><button type="button" class="rnd" data-k="1" style="width:100%;margin:0 0 8px">🎼 해 본 적 있어요 — 장조연습</button><div style="display:flex;gap:8px;justify-content:center;font-size:13px"><button type="button" class="rnd" data-k="2" style="flex:1">단조연습</button><button type="button" class="rnd" data-k="3" style="flex:1">자유작곡</button></div></div>`);
+  document.body.appendChild(m);
+  m.addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(!b)return;m.remove();lsSet('sd_seen','1');
+    if(b.dataset.k==='t'){setLevel(0);}else setLevel(+b.dataset.k);});
+}
+if(!SEEN)showWelcome();
 })();
 </script>
 
