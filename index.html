@@ -1,4 +1,6 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>SongDrawer</title>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>SongDrawer</title>
+<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Jua&display=swap">
 <style>
 /* 레이아웃: 단계 → 코드 진행·타이머 → 한 마디 한 화면 9열 판(입구 · [퍼즐 · 음] × 4박, 10음 세로) → 안내 → 조작 */
@@ -167,7 +169,7 @@ body[data-phase="flow"] #tfill,body[data-phase="done"] #tfill{opacity:.35}
 .stage{position:relative;overflow:hidden;width:max-content;max-width:100%;border-radius:16px}
 .mview{display:grid;justify-items:center;gap:6px}
 .clone{position:absolute;left:0;top:0;width:100%;pointer-events:none}
-.mini{position:absolute;inset:0;background:var(--bed);border-radius:16px;z-index:6;cursor:pointer;overflow:hidden}
+.mini{--bed:#FFFFFF;--tank:#27204D;--cell-ink:#6B6A86;--water:#12B8A0;--pipe:#FF7F9C;--pipe-edge:#8A1F52;--bore:#181A47;position:absolute;inset:0;background:var(--bed);box-shadow:inset 0 0 0 1px #E2DDEB;border-radius:16px;z-index:6;cursor:pointer;overflow:hidden}
 .mini svg{display:block;width:100%;height:100%}
 .mini .mt{font:400 18px var(--f-display);fill:var(--tank);text-anchor:middle}
 .mini .slot-on{fill:var(--water);opacity:.12}
@@ -397,7 +399,6 @@ body:not(.s1) #chordView{display:none}
 .cbtns .pri{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
 @media (prefers-reduced-motion:reduce){.cslot.act,.cmap .pulse,.ccard.shake{animation:none}}
 </style>
-</head><body>
 
 <div class="app">
   <h1 class="sr">음정 선택</h1>
@@ -536,8 +537,14 @@ function nctUsed(m,cur,bt){                        // 곡 전체에서 bt번째 
   }
   return c;
 }
-function judgeNote(m,b,n,prev,cur){                 // 기본 판정 + (실전 모드) 도약금지
+const SAME_MAX=2;                                  // 한 마디에 같은 음(계이름)은 두 번까지
+function sameCount(b,n,cur){                       // 이 마디에서 b박 말고 이미 이어 둔 박 중 n과 같은 계이름의 수
+  let c=0;for(let i=0;i<b;i++)if(cur[i]!==undefined&&cur[i]%7===n%7)c++;return c;
+}
+function judgeNote(m,b,n,prev,cur){                 // 기본 판정 + 같은 음 두 번까지 + (실전 모드) 도약금지
   const jd=judgeBase(m,b,n,prev,cur);
+  if(jd.ok&&!isW(m)&&sameCount(b,n,cur||R.cur)>=SAME_MAX)
+    return {ok:false,cls:null,why:`한 마디에 같은 음(계이름)은 두 번까지만 쓸 수 있어요. 이 마디에서 ‘${sn(n,R.meas[m].fl)}’는 이미 ${SAME_MAX}번 썼어요. 다른 음을 골라 주세요.`};
   if(jd.ok&&state.mode==='real'&&state.leapOn&&prev!==undefined&&!isW(m)&&Math.abs(n-prev)+1>=state.leap)
     return {ok:false,cls:null,why:`앞 음에서 ${Math.abs(n-prev)+1}도나 뛰었어요. 지금은 ${state.leap}도 이상 뛰는 도약이 금지예요. 더 가까운 음으로 이어 주세요.`};
   return jd;
@@ -614,7 +621,7 @@ function mkMeasure(rn,mi){                            // 한 마디는 한 화�
     const wr=shuffle(all.filter(n=>!correct(n))).slice(0,st.wrongs);
     return all.filter(n=>correct(n)||wr.includes(n));
   });
-  const rec=opens.map(o=>{const c=o.filter(n=>pc.includes(n%7));return c[rand(c.length)];});   // 레벨 1 힌트: 무작위 추천 선율
+  const rec=[];opens.forEach((o,b)=>{const c=o.filter(n=>pc.includes(n%7)),ok=whole?c:c.filter(n=>rec.filter(q=>q%7===n%7).length<SAME_MAX);const pool=ok.length?ok:c;rec.push(pool[rand(pool.length)]);});   // 같은 음은 두 번까지   // 레벨 1 힌트: 무작위 추천 선율
   return {rn,pc,opens,rec,fl:CD[rn].fl,whole:isW(mi)};
 }
 function newRun(){
@@ -1000,7 +1007,11 @@ function hintCls(c){                               // 레벨별 힌트 색
   const prev=c.b===0?entryNote():(R.route[c.b-1]!==undefined?TOP-R.route[c.b-1]:undefined);
   if(st===1){const k=c.correct?'g':null;return k&&prev!==undefined&&!judgeNote(R.m,c.b,c.n,prev).ok?null:k;}
   if(c.b>0&&prev===undefined)return c.correct?'g':null;
-  const jd=judgeNote(R.m,c.b,c.n,prev);return jd.ok?jd.cls:null;
+  const jd=judgeNote(R.m,c.b,c.n,prev,hintSeq(c.b));return jd.ok?jd.cls:null;
+}
+function hintSeq(b){                               // 지금 파이프로 이어 둔 앞 박들의 음(같은 음 두 번까지 규칙용). 비화성음 횟수는 기존처럼 R.cur로 셈
+  const s=R.cur.slice();for(let i=0;i<b;i++){const r=R.route[i];if(r!==undefined)s[i]=TOP-r;}
+  return s;
 }
 const LEGEND=[[['g','추천 음 하나']],[['g','화성음']],[['g','화성음'],['y','지금 쓸 수 있는 비화성음']]];
 let warn4Key=null,pend4=false,warn4Shown=false;
@@ -1202,6 +1213,12 @@ function endDrag(e,apply){
   const sc0=cells[d.r][d.b*2];
   if(!Object.keys(d.hits).length&&rel===sc0&&sc0.kind==='target'){   // 탱크를 톡 누르면: 지금 불 켜진(잇기 준비) 음에서 이 탱크까지 자동으로 이음
     const k=(sc0.c-2)/2,rows=traceConn().rows;let nb=0;while(nb<NB()&&rows[nb]!==undefined)nb++;
+    if(R.route[k]===sc0.r&&k<nb){                      // 이미 선택(이어 둔) 음을 한 번 더 톡 누르면: 선택 해제
+      for(let j=k;j<NB();j++)for(let r=0;r<NR;r++)if(cells[r][PC(j)].locked){shakeCell(cells[r][PC(j)]);refreshGuide();return;}
+      for(let j=k;j<NB();j++){for(let r=0;r<NR;r++){const s=cells[r][PC(j)];if(s.pipe){s.pipe=null;paint(s);}}R.route[j]=undefined;}
+      say('',`${k+1}박 ‘${nameOf(sc0.n)}’ 선택을 풀었어요`,k<NB()-1?'뒤쪽 박도 함께 지웠어요. 다시 이어 보세요.':'다시 이어 보세요. 다 이으면 음악이 흘러나와요.');
+      onPipesChanged(true);return;
+    }
     if(k>nb){say('','앞 음부터 차례로 골라요',`깜빡이는 ${nb+1}번째 음 칸 줄에서 먼저 골라 주세요.`);refreshGuide();return;}
     if(M.free&&k===0)M.rin=R.rin[0]=sc0.r;
     if(applySegment(k,k===0?M.rin:rows[k-1],sc0.r)){row=sc0.r;n=1;}
@@ -1563,7 +1580,7 @@ function playOverview(){
   tk.forEach((t,i)=>{                                                                     // 음표: 파이프가 음 탱크에 닿는 자리, 오선 위 높이 = 파이프 높이
     const n=R.done[Math.floor(i/4)][i%4],x=t.x,y=t.y;
     if(!DUR(i%4,Math.floor(i/4))){noteSvg+=`<g class="sn" data-i="${i}"></g>`;return;}
-    let g=`<g class="sn" data-i="${i}" style="color:var(--tank);opacity:.7">`;   // 아직 안 흐른 음표: 밝은 윤곽선(어두운 테두리로 파이프와 분리)
+    let g=`<g class="sn" data-i="${i}" style="color:var(--tank);opacity:.4">`;   // 아직 안 흐른 음표: 밝은 윤곽선(어두운 테두리로 파이프와 분리)
     const it=[{x,y,v:n,dur:DUR(i%4,Math.floor(i/4)),fl:isFlat(n,R.meas[Math.floor(i/4)].fl)}];
     if(n===0)g+=`<line x1="${f2(x-NT.hc*ks-.4*su*.56)}" y1="${f2(y)}" x2="${f2(x+NT.hc*ks+.4*su*.56)}" y2="${f2(y)}" style="stroke:var(--bed);stroke-width:${f2(su*.16+3)};opacity:.7"/><line x1="${f2(x-NT.hc*ks-.4*su*.56)}" y1="${f2(y)}" x2="${f2(x+NT.hc*ks+.4*su*.56)}" y2="${f2(y)}" style="stroke:currentColor;stroke-width:${f2(su*.16)}"/>`;
     g+=noteSet(it,ks,'halo')+noteSet(it,ks,'line');
@@ -1593,7 +1610,7 @@ function playOverview(){
     if(t>=key[key.length-1][0])len=key[key.length-1][1];
     else for(let k=1;k<key.length;k++)if(t<key[k][0]){const a=key[k-1],b=key[k];len=t<a[0]?a[1]:a[1]+(b[1]-a[1])*(t-a[0])/(b[0]-a[0]);break;}
     wps.forEach((w,i)=>{const v=Math.max(0,Math.min(len-lenOff[i],PS[i].len+10));w.setAttribute('stroke-dasharray',`${v} 99999`);});
-    tk.forEach((q,i)=>{if(!q.done&&t>=q.t){q.done=true;if(sn[i]){sn[i].style.color='var(--good)';sn[i].style.opacity='1';}}});
+    tk.forEach((q,i)=>{if(!q.done&&t>=q.t){q.done=true;if(sn[i]){sn[i].style.color='#5E53D8';sn[i].style.opacity='1';}}});
     const cur=Math.min(cnt-1,Math.max(0,Math.floor((t-D+.2)/DT)));
     sl.forEach((r,i)=>r.style.opacity=(t>=D-.1&&i===cur&&t<end)?'.14':'0');
     if(t>end+.15){closeOverview();return;}
@@ -1682,7 +1699,7 @@ const TOUR=[
   {t:['#cnotes'],h:'도·미·솔',x:'이번 마디 화음을 이루는 음이에요. 이 음들이 ‘화성음’이에요.'},
   {t:['#rbtn'],h:'리듬',x:'마디마다 음표 4개짜리 리듬을 고를 수 있어요.'},
   {t:['#tbtn'],h:'빠르기',x:'누를 때마다 느리게 · 보통빠르게 · 빠르게로 바뀌어요.'},
-  {t:['#board'],h:'음 만들기 판',x:'음을 눌러 선택하고, 다음 박의 음까지 손가락으로 이어 곡을 만들어보세요. 4박(한 마디)을 모두 이으면 내 음악이 흘러나와요.'},
+  {t:['#board'],h:'음 만들기 판',x:'음을 눌러 선택하고, 다음 박의 음까지 손가락으로 이어 곡을 만들어보세요. 4박(한 마디)을 모두 이으면 내 음악이 흘러나와요. 한 마디에 같은 음(계이름)은 두 번까지만 쓸 수 있어요. 이미 이은 음을 한 번 더 톡 누르면 그 박부터 뒤쪽까지 선택이 풀려요.'},
   {t:['.navrow'],h:'이전마디 · 다음마디',x:'마디를 완성하면 다음 마디로 갈 수 있어요. 마지막 음이 다음 마디의 시작이 돼요.'},
   {t:['#band .ib[data-k]'],h:'🥁 🎸 🎹 반주',x:'드럼 · 베이스 · 건반이에요. 누를 때마다 다른 반주(없음 포함)로 바뀌고, 그 악기 소리만 들려줘요.'},
   {t:['#band .ns'],h:'도 | C',x:'계이름을 한글(도레미)과 영어(CDE)로 바꿔서 보여줘요.'},
